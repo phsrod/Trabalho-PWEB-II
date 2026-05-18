@@ -2,6 +2,9 @@
 // BARBEARIA STYLE - SCRIPT PRINCIPAL (HOME)
 // ============================================
 
+const COOKIE_CONSENT_KEY = 'cookieConsentAccepted';
+const BOOKING_DRAFT_KEY = 'bookingDraft';
+
 // Aguarda o carregamento completo do DOM
 document.addEventListener('DOMContentLoaded', function() {
     initApp();
@@ -11,6 +14,7 @@ document.addEventListener('DOMContentLoaded', function() {
  * Inicializa todas as funcionalidades da aplicação
  */
 function initApp() {
+    initCookieConsent();
     initGreeting();
     initUserDropdown();
     initHeroCarousel();
@@ -404,6 +408,9 @@ function initCalendar() {
 
                 // Armazena a data selecionada
                 window.selectedDate = dateObj;
+                saveBookingDraft({
+                    selectedDate: dateObj.toISOString(),
+                });
 
                 // Renderiza horários disponíveis
                 // Se houver barbeiro selecionado, filtra por ele
@@ -459,6 +466,9 @@ function initBookingSystem() {
     const bookingForm = document.getElementById('bookingForm');
     const confirmationPopup = document.getElementById('confirmationPopup');
     const closePopup = document.getElementById('closePopup');
+    const serviceSelect = document.getElementById('service');
+    const barberSelect = document.getElementById('barber');
+    const notesInput = document.getElementById('notes');
 
     if (!timeSlotsContainer || !bookingForm) return;
 
@@ -546,6 +556,7 @@ function initBookingSystem() {
                     slot.classList.add('selected');
 
                     window.selectedTime = hour;
+                    saveBookingDraft({ selectedTime: hour });
 
                     const selectedInfoTime = document.querySelector('.selected-info p:nth-child(2) span');
                     if (selectedInfoTime) selectedInfoTime.textContent = hour;
@@ -578,9 +589,36 @@ function initBookingSystem() {
         }, 500);
     };
 
-    // Listener para mudança de barbeiro - re-renderiza horários
-    const barberSelect = document.getElementById('barber');
-   
+    restoreBookingDraft();
+
+    if (serviceSelect) {
+        serviceSelect.addEventListener('change', () => {
+            saveBookingDraft({ service: serviceSelect.value });
+        });
+    }
+
+    if (barberSelect) {
+        barberSelect.addEventListener('change', () => {
+            const barberId = barberSelect.value;
+            saveBookingDraft({ barber: barberId });
+
+            if (!barberId) {
+                window.selectedBarber = null;
+                return;
+            }
+
+            const barberName = getBarberNameById(barberId);
+            if (barberName) {
+                window.selectedBarber = { id: barberId, name: barberName };
+            }
+        });
+    }
+
+    if (notesInput) {
+        notesInput.addEventListener('input', () => {
+            saveBookingDraft({ notes: notesInput.value });
+        });
+    }
 
     // Validação e submissão do formulário
     bookingForm.addEventListener('submit', function(e) {
@@ -661,6 +699,8 @@ function initBookingSystem() {
                 window.selectedTime = null;
 
                 if (stepService) stepService.classList.remove('active');
+
+                    clearBookingDraft();
 
                 showNotification('Agendamento realizado com sucesso!', 'success');
             })
@@ -1190,6 +1230,7 @@ window.selectBarber = function(barberId, barberName) {
         id: barberId,
         name: barberName
     };
+    saveBookingDraft({ barber: barberId });
 
     const barberSelect = document.getElementById('barber');
     if (barberSelect) {
@@ -1244,9 +1285,127 @@ window.selectServiceForBooking = function(serviceId) {
     const serviceSelect = document.getElementById('service');
     if (serviceSelect) {
         serviceSelect.value = serviceId;
+        saveBookingDraft({ service: serviceId });
         showNotification('Serviço selecionado! Agora escolha data e horário.', 'success');
     }
 };
+
+function initCookieConsent() {
+    const banner = document.getElementById('cookieConsentBanner');
+    const acceptBtn = document.getElementById('acceptCookiesBtn');
+
+    if (!banner || !acceptBtn) return;
+
+    const consent = getCookie(COOKIE_CONSENT_KEY);
+    if (consent === 'true') {
+        banner.style.display = 'none';
+        return;
+    }
+
+    banner.style.display = 'flex';
+
+    acceptBtn.addEventListener('click', () => {
+        setCookie(COOKIE_CONSENT_KEY, 'true', 180);
+        banner.style.display = 'none';
+    });
+}
+
+function setCookie(name, value, days) {
+    const maxAge = days * 24 * 60 * 60;
+    document.cookie = `${name}=${encodeURIComponent(value)}; max-age=${maxAge}; path=/; SameSite=Lax`;
+}
+
+function getCookie(name) {
+    const cookies = document.cookie ? document.cookie.split('; ') : [];
+    for (const cookie of cookies) {
+        const [key, ...rest] = cookie.split('=');
+        if (key === name) {
+            return decodeURIComponent(rest.join('='));
+        }
+    }
+    return null;
+}
+
+function saveBookingDraft(partialDraft) {
+    try {
+        const current = getBookingDraft();
+        const next = {
+            ...current,
+            ...partialDraft,
+        };
+        sessionStorage.setItem(BOOKING_DRAFT_KEY, JSON.stringify(next));
+    } catch (error) {
+        console.error('Erro ao salvar rascunho de agendamento:', error);
+    }
+}
+
+function getBookingDraft() {
+    try {
+        const raw = sessionStorage.getItem(BOOKING_DRAFT_KEY);
+        return raw ? JSON.parse(raw) : {};
+    } catch (error) {
+        console.error('Erro ao ler rascunho de agendamento:', error);
+        return {};
+    }
+}
+
+function clearBookingDraft() {
+    sessionStorage.removeItem(BOOKING_DRAFT_KEY);
+}
+
+function restoreBookingDraft() {
+    const draft = getBookingDraft();
+    if (!draft || Object.keys(draft).length === 0) return;
+
+    const serviceSelect = document.getElementById('service');
+    const barberSelect = document.getElementById('barber');
+    const notesInput = document.getElementById('notes');
+    const selectedDateSpan = document.querySelector('.selected-date-info span');
+    const selectedInfoDate = document.querySelector('.selected-info p span');
+    const selectedInfoTime = document.querySelector('.selected-info p:nth-child(2) span');
+
+    if (draft.service && serviceSelect) {
+        serviceSelect.value = draft.service;
+    }
+
+    if (draft.barber && barberSelect) {
+        barberSelect.value = draft.barber;
+        const barberName = getBarberNameById(draft.barber);
+        if (barberName) {
+            window.selectedBarber = { id: draft.barber, name: barberName };
+        }
+    }
+
+    if (typeof draft.notes === 'string' && notesInput) {
+        notesInput.value = draft.notes;
+    }
+
+    if (draft.selectedDate) {
+        const restoredDate = new Date(draft.selectedDate);
+        if (!Number.isNaN(restoredDate.getTime())) {
+            window.selectedDate = restoredDate;
+            const dateText = formatDateForStorage(restoredDate);
+            if (selectedDateSpan) selectedDateSpan.textContent = dateText;
+            if (selectedInfoDate) selectedInfoDate.textContent = dateText;
+        }
+    }
+
+    if (draft.selectedTime) {
+        window.selectedTime = draft.selectedTime;
+        if (selectedInfoTime) selectedInfoTime.textContent = draft.selectedTime;
+    }
+}
+
+function getBarberNameById(barberId) {
+    const barberMap = {
+        luciano: 'Luciano Sousa Barbosa',
+        pedro: 'Pedro Henrique Rodrigues',
+        joao: 'João Vitor Santana',
+        samuel: 'Samuel Torres',
+    };
+
+    return barberMap[barberId] || null;
+}
 
 /**
  * Restaura a lista completa de barbeiros no select
