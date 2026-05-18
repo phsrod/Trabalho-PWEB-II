@@ -30,8 +30,6 @@ function initApp() {
 function initGreeting() {
     // Verifica se o usuário está autenticado
     const authToken = localStorage.getItem('authToken');
-    const usuarioData = localStorage.getItem('usuario');
-
     const greetingContainer = document.querySelector('.greeting');
     const userNameElement = document.getElementById('userName');
 
@@ -40,33 +38,84 @@ function initGreeting() {
         greetingContainer.style.display = 'flex';
     }
 
-    // Se não estiver autenticado, oculta apenas o nome do usuário
-    if (!authToken || !usuarioData) {
+    // Se não estiver autenticado, exibe saudação simples
+    if (!authToken) {
         if (userNameElement) {
             userNameElement.style.display = 'none';
         }
-    } else {
-        // Se estiver autenticado, exibe o nome
-        if (userNameElement) {
-            userNameElement.style.display = 'inline';
-        }
+        updateGreeting(false);
+        setInterval(() => updateGreeting(false), 3600000);
+        return;
+    }
 
-        // Atualiza o nome do usuário
-        try {
+    // Se estiver autenticado, carrega dados do servidor SINCRONAMENTE
+    try {
+        // ============================================
+        // COMUNICAÇÃO SÍNCRONA - XMLHttpRequest
+        // ============================================
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', 'http://localhost:3003/api/usuarios/perfil', false); // false = SÍNCRONO
+        xhr.setRequestHeader('Authorization', `Bearer ${authToken}`);
+        xhr.setRequestHeader('Content-Type', 'application/json');
+        xhr.send(); // Bloqueia aqui até receber resposta do servidor
+
+        // Verifica se a requisição foi bem-sucedida
+        if (xhr.status === 200) {
+            const userData = JSON.parse(xhr.responseText);
+            
+            // Atualiza localStorage com dados frescos do servidor
+            localStorage.setItem('usuario', JSON.stringify(userData));
+            
+            // Exibe o nome do usuário
+            if (userNameElement) {
+                userNameElement.style.display = 'inline';
+                const nomePartes = userData.nomeCompleto.split(' ');
+                const primeiroNome = nomePartes[0];
+                const inicialSobrenome = nomePartes.length > 1 ? nomePartes[nomePartes.length - 1].charAt(0) + '.' : '';
+                userNameElement.textContent = `${primeiroNome} ${inicialSobrenome}`;
+            }
+            
+            updateGreeting(true);
+            setInterval(() => updateGreeting(true), 3600000);
+        } else {
+            // Se falhar, usa localStorage como fallback
+            const usuarioData = localStorage.getItem('usuario');
+            if (usuarioData) {
+                const usuario = JSON.parse(usuarioData);
+                if (userNameElement && usuario.nomeCompleto) {
+                    userNameElement.style.display = 'inline';
+                    const nomePartes = usuario.nomeCompleto.split(' ');
+                    const primeiroNome = nomePartes[0];
+                    const inicialSobrenome = nomePartes.length > 1 ? nomePartes[nomePartes.length - 1].charAt(0) + '.' : '';
+                    userNameElement.textContent = `${primeiroNome} ${inicialSobrenome}`;
+                }
+                updateGreeting(true);
+            } else {
+                updateGreeting(false);
+            }
+            setInterval(() => updateGreeting(true), 3600000);
+        }
+    } catch (error) {
+        console.error('Erro ao carregar dados sincronamente:', error);
+        // Fallback para localStorage
+        const usuarioData = localStorage.getItem('usuario');
+        if (usuarioData) {
             const usuario = JSON.parse(usuarioData);
             if (userNameElement && usuario.nomeCompleto) {
-                // Pega o primeiro nome e a inicial do sobrenome
+                userNameElement.style.display = 'inline';
                 const nomePartes = usuario.nomeCompleto.split(' ');
                 const primeiroNome = nomePartes[0];
                 const inicialSobrenome = nomePartes.length > 1 ? nomePartes[nomePartes.length - 1].charAt(0) + '.' : '';
                 userNameElement.textContent = `${primeiroNome} ${inicialSobrenome}`;
             }
-        } catch (e) {
-            console.error('Erro ao parsear dados do usuário:', e);
+            updateGreeting(true);
+        } else {
+            updateGreeting(false);
         }
+        setInterval(() => updateGreeting(true), 3600000);
     }
 
-    function updateGreeting() {
+    function updateGreeting(isAuthenticated) {
         const now = new Date();
         const hour = now.getHours();
         let greeting = '';
@@ -82,7 +131,7 @@ function initGreeting() {
         const greetingElement = document.getElementById('greeting');
         if (greetingElement) {
             // Se estiver autenticado, adiciona vírgula após a saudação
-            if (authToken && usuarioData) {
+            if (isAuthenticated) {
                 greetingElement.textContent = greeting + ',';
             } else {
                 // Se não estiver autenticado, não adiciona vírgula
@@ -90,10 +139,6 @@ function initGreeting() {
             }
         }
     }
-
-    updateGreeting();
-    // Atualiza a cada hora
-    setInterval(updateGreeting, 3600000);
 }
 
 // ============================================
