@@ -1,6 +1,6 @@
 # 🎯 Barbearia Style - Sistema de Agendamento Online
 
-Sistema web completo para gerenciamento de agendamentos de uma barbearia, desenvolvido como trabalho acadêmico para a disciplina de Programação Web I. A aplicação permite que clientes visualizem serviços, barbeiros, realizem agendamentos online e gerenciem seu perfil de forma intuitiva e moderna.
+Sistema web completo para gerenciamento de agendamentos de uma barbearia, desenvolvido como trabalho acadêmico para a disciplina de Programação Web II. A aplicação permite que clientes visualizem serviços, barbeiros, realizem agendamentos online e gerenciem seu perfil de forma intuitiva e moderna.
 
 ---
 
@@ -219,6 +219,8 @@ erDiagram
 | **Font Awesome** | 6.0.0 | Ícones e elementos visuais |
 | **Fetch API** | Nativo | Comunicação com o back-end |
 | **LocalStorage** | Nativo | Armazenamento de token e dados do usuário |
+| **SessionStorage** | Nativo | Rascunho de agendamento (bookingDraft) |
+| **Cookies (document.cookie)** | Nativo | Consentimento de cookies, última visita e contador de visitas |
 
 ### Back-end
 
@@ -325,6 +327,11 @@ erDiagram
 
 ### 🎨 Interface do Usuário
 
+- ✅ **Cookies de Visita**
+  - Contador automático de visitas (persistente por 365 dias)
+  - Exibição da data/hora da última visita do usuário
+  - Notificação de boas-vindas com número da visita e último acesso
+
 - ✅ **Design Responsivo**
   - Layout adaptável para desktop, tablet e mobile
   - Menu hambúrguer para dispositivos móveis
@@ -367,7 +374,7 @@ erDiagram
 ## 📁 Estrutura do Projeto
 
 ```
-Trabalho-PWEB-I/
+Trabalho-PWEB-II/
 │
 ├── 📂 web/                      # Front-end (Interface Web)
 │   ├── 📂 index/                # Páginas HTML
@@ -547,7 +554,7 @@ sequenceDiagram
 ```bash
 # Se estiver usando Git
 git clone <url-do-repositorio>
-cd Trabalho-PWEB-I
+cd Trabalho-PWEB-II
 ```
 
 #### 2. Configurar o Banco de Dados
@@ -807,7 +814,7 @@ Controla os horários indisponíveis dos barbeiros.
 
 ## 🤝 Contribuição
 
-Este é um projeto acadêmico desenvolvido para a disciplina de Programação Web I. Para contribuições ou sugestões, entre em contato com a equipe de desenvolvimento.
+Este é um projeto acadêmico desenvolvido para a disciplina de Programação Web II. Para contribuições ou sugestões, entre em contato com a equipe de desenvolvimento.
 
 ---
 
@@ -819,7 +826,7 @@ Este projeto é de uso acadêmico e educacional.
 
 ## 👥 Autores
 
-Desenvolvido como trabalho acadêmico para a disciplina de Programação Web I.
+Desenvolvido como trabalho acadêmico para a disciplina de Programação Web II.
 
 ---
 
