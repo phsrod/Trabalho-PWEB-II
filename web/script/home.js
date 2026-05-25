@@ -4,6 +4,8 @@
 
 const COOKIE_CONSENT_KEY = 'cookieConsentAccepted';
 const BOOKING_DRAFT_KEY = 'bookingDraft';
+const LAST_VISIT_KEY = 'lastVisit';
+const VISIT_COUNT_KEY = 'visitCount';
 
 // Aguarda o carregamento completo do DOM
 document.addEventListener('DOMContentLoaded', function() {
@@ -14,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
  * Inicializa todas as funcionalidades da aplicação
  */
 function initApp() {
+    initVisitCookies();
     initCookieConsent();
     initGreeting();
     initUserDropdown();
@@ -1289,6 +1292,41 @@ window.selectServiceForBooking = function(serviceId) {
         showNotification('Serviço selecionado! Agora escolha data e horário.', 'success');
     }
 };
+
+// ============================================
+// 12. COOKIES DE VISITA (ÚLTIMA VISITA E CONTADOR)
+// ============================================
+function initVisitCookies() {
+    // Lê ou inicializa o contador de visitas
+    let visitCount = parseInt(getCookie(VISIT_COUNT_KEY), 10) || 0;
+    visitCount++;
+    setCookie(VISIT_COUNT_KEY, visitCount, 365);
+
+    // Lê a data da última visita
+    const lastVisit = getCookie(LAST_VISIT_KEY);
+    const agora = new Date();
+    setCookie(LAST_VISIT_KEY, agora.toISOString(), 365);
+
+    // Se não é a primeira visita, exibe as informações
+    if (lastVisit) {
+        const ultimaData = new Date(lastVisit);
+        const dataFormatada = ultimaData.toLocaleDateString('pt-BR', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+
+        // Delay para não interferir com outras notificações da inicialização
+        setTimeout(() => {
+            showNotification(
+                `Bem-vindo de volta! Visita #${visitCount} | Última vez: ${dataFormatada}`,
+                'info'
+            );
+        }, 1500);
+    }
+}
 
 function initCookieConsent() {
     const banner = document.getElementById('cookieConsentBanner');
