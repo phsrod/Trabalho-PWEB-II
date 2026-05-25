@@ -9,8 +9,15 @@ export async function autenticacaoRoutes(app: FastifyInstance) {
     return autenticacaoController.cadastrar(request, reply)
   })
 
-  // Login
-  app.post('/login', async (request, reply) => {
+  // Login — limite restrito: 5 tentativas por minuto por IP
+  app.post('/login', {
+    config: {
+      rateLimit: {
+        max: 5,
+        timeWindow: '1 minute',
+      },
+    },
+  }, async (request, reply) => {
     return autenticacaoController.login(request, reply)
   })
 

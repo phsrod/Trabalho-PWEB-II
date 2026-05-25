@@ -132,8 +132,22 @@ function initLoginForm() {
                 }, 1000);
             })
             .catch(error => {
-                submitBtn.innerHTML = originalText;
-                submitBtn.disabled = false;
+                // Cooldown de 3 segundos antes de permitir nova tentativa
+                // Já mostra o countdown imediatamente, sem flicker
+                submitBtn.disabled = true;
+                let cooldown = 3;
+
+                const cooldownInterval = setInterval(() => {
+                    if (cooldown > 0) {
+                        submitBtn.innerHTML = `Aguarde ${cooldown}s para tentar novamente`;
+                        cooldown--;
+                    } else {
+                        clearInterval(cooldownInterval);
+                        submitBtn.innerHTML = originalText;
+                        submitBtn.disabled = false;
+                    }
+                }, 1000);
+
                 showNotification(error.message, 'error');
             });
     });

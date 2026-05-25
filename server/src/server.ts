@@ -1,5 +1,6 @@
 import fastifyCors from '@fastify/cors'
 import fastifyJwt from '@fastify/jwt'
+import rateLimit from '@fastify/rate-limit'
 import fastify from 'fastify'
 import { registrarRotas } from './routes/index.ts'
 
@@ -18,6 +19,12 @@ app.register(fastifyJwt, {
   sign: {
     expiresIn: '7d',
   },
+})
+
+// Configuração de Rate Limit — proteção contra força bruta e sobrecarga
+app.register(rateLimit, {
+  max: 100,
+  timeWindow: '1 minute',
 })
 
 // Rota de health check

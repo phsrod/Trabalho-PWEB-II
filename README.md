@@ -231,6 +231,7 @@ erDiagram
 | **PostgreSQL** | 18 | Banco de dados relacional |
 | **Zod** | 4.1.13 | Validação de schemas |
 | **JWT** | 10.0.0 | Autenticação baseada em tokens |
+| **Rate Limit** | - | Controle de requisições (5 tentativas/min no login) |
 | **CORS** | 11.1.0 | Controle de acesso cross-origin |
 
 ### Ferramentas de Desenvolvimento
@@ -260,6 +261,12 @@ erDiagram
   - Geração de JWT tokens com expiração de 7 dias
   - Armazenamento seguro do token no localStorage
   - Verificação automática de token em requisições protegidas
+
+- ✅ **Rate Limiting (Proteção contra Força Bruta)**
+  - Limite de 5 tentativas de login por minuto por IP
+  - Cooldown visual de 3 segundos no botão após tentativa falha
+  - Mensagem amigável em português para o usuário
+  - Bloqueio automático temporário ao exceder o limite
 
 - ✅ **Proteção de Rotas**
   - Middleware de autenticação JWT
@@ -637,7 +644,7 @@ http-server -p 8000
 | Método | Endpoint | Descrição | Autenticação |
 |--------|----------|-----------|--------------|
 | `POST` | `/auth/cadastro` | Cadastra novo usuário | ❌ |
-| `POST` | `/auth/login` | Realiza login | ❌ |
+| `POST` | `/auth/login` | Realiza login (rate limit: 5/min) | ❌ |
 | `GET` | `/auth/verificar-token` | Verifica se token é válido | ✅ |
 
 ### Usuários
@@ -778,6 +785,7 @@ Controla os horários indisponíveis dos barbeiros.
 - ✅ JWT tokens com expiração de 7 dias
 - ✅ Validação de dados no back-end com Zod
 - ✅ CORS configurado para permitir requisições do front-end
+- ✅ Rate limiting no login (5 tentativas/minuto por IP) com cooldown visual
 - ✅ Tokens armazenados no localStorage (considerar httpOnly cookies em produção)
 
 ### Performance

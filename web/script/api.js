@@ -55,6 +55,12 @@ class ApiClient {
                 if (response.status === 401) {
                     this.handleUnauthorized();
                 }
+
+                // Se excedeu o limite de requisições (rate limiting)
+                if (response.status === 429) {
+                    throw new Error('Muitas tentativas. Aguarde 1 minuto para tentar novamente.');
+                }
+
                 throw new Error(data.mensagem || 'Erro na requisição');
             }
 
