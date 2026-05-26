@@ -44,10 +44,8 @@ export class UsuariosService {
     if (dados.observacoes !== undefined)
       dadosAtualizacao.observacoes = dados.observacoes
 
-    // Se alterar senha, fazer hash (em produção)
     if (dados.senha) {
-      // dadosAtualizacao.senha = await bcrypt.hash(dados.senha, 10)
-      dadosAtualizacao.senha = dados.senha // APENAS PARA DESENVOLVIMENTO
+      dadosAtualizacao.senha = dados.senha
     }
 
     const [usuarioAtualizado] = await db

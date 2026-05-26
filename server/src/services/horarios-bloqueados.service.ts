@@ -72,7 +72,6 @@ export class HorariosBloqueadosService {
   }
 
   async criar(dados: CriarHorarioBloqueadoInput) {
-    // Verifica se já existe um horário bloqueado para o barbeiro nessa data/hora
     const [existente] = await db
       .select()
       .from(horariosBloqueados)
@@ -86,11 +85,9 @@ export class HorariosBloqueadosService {
       .limit(1)
 
     if (existente) {
-      // Se já existe, retorna o existente ao invés de criar duplicado
       return existente
     }
 
-    // Cria o horário bloqueado
     const [novoHorario] = await db
       .insert(horariosBloqueados)
       .values({
@@ -122,7 +119,6 @@ export class HorariosBloqueadosService {
       .limit(1)
 
     if (!horarioBloqueado) {
-      // Se não encontrou, não faz nada (não lança erro)
       return { mensagem: 'Horário bloqueado não encontrado' }
     }
 

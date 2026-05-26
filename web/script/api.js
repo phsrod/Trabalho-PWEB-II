@@ -1,23 +1,10 @@
-// ============================================
-// BARBEARIA STYLE - API HELPER
-// ============================================
-
 const API_BASE_URL = 'http://localhost:3003';
 
-/**
- * Classe para gerenciar chamadas à API
- */
 class ApiClient {
-    /**
-     * Retorna o token de autenticação do localStorage
-     */
     getToken() {
         return localStorage.getItem('authToken');
     }
 
-    /**
-     * Retorna os headers padrão para requisições
-     */
     getHeaders(includeAuth = false) {
         const headers = {
             'Content-Type': 'application/json',
@@ -33,9 +20,6 @@ class ApiClient {
         return headers;
     }
 
-    /**
-     * Faz uma requisição genérica à API
-     */
     async request(endpoint, options = {}) {
         const url = `${API_BASE_URL}${endpoint}`;
         const config = {
@@ -51,12 +35,10 @@ class ApiClient {
             const data = await response.json();
 
             if (!response.ok) {
-                // Se o token expirou ou é inválido, redireciona para login
                 if (response.status === 401) {
                     this.handleUnauthorized();
                 }
 
-                // Se excedeu o limite de requisições (rate limiting)
                 if (response.status === 429) {
                     throw new Error('Muitas tentativas. Aguarde 1 minuto para tentar novamente.');
                 }
@@ -71,26 +53,15 @@ class ApiClient {
         }
     }
 
-    /**
-     * Trata requisições não autorizadas
-     */
     handleUnauthorized() {
         localStorage.removeItem('authToken');
         localStorage.removeItem('usuario');
 
-        // Não redireciona se já estiver na página de login
         if (!window.location.pathname.includes('login.html')) {
             window.location.href = '/web/index/login.html';
         }
     }
 
-    // ============================================
-    // AUTENTICAÇÃO
-    // ============================================
-
-    /**
-     * Faz cadastro de novo usuário
-     */
     async cadastro(dados) {
         return this.request('/auth/cadastro', {
             method: 'POST',
@@ -98,9 +69,6 @@ class ApiClient {
         });
     }
 
-    /**
-     * Faz login
-     */
     async login(dados) {
         return this.request('/auth/login', {
             method: 'POST',
@@ -108,9 +76,6 @@ class ApiClient {
         });
     }
 
-    /**
-     * Verifica se o token é válido
-     */
     async verificarToken() {
         return this.request('/auth/verificar-token', {
             method: 'GET',
@@ -118,13 +83,6 @@ class ApiClient {
         });
     }
 
-    // ============================================
-    // USUÁRIOS
-    // ============================================
-
-    /**
-     * Busca perfil do usuário logado
-     */
     async buscarPerfil() {
         return this.request('/api/usuarios/perfil', {
             method: 'GET',
@@ -132,9 +90,6 @@ class ApiClient {
         });
     }
 
-    /**
-     * Atualiza perfil do usuário
-     */
     async atualizarPerfil(dados) {
         return this.request('/api/usuarios/perfil', {
             method: 'PUT',
@@ -143,39 +98,18 @@ class ApiClient {
         });
     }
 
-    // ============================================
-    // BARBEIROS (Apenas Leitura - Dados Fixos)
-    // ============================================
-
-    /**
-     * Lista todos os barbeiros
-     */
     async listarBarbeiros() {
         return this.request('/api/barbeiros', {
             method: 'GET',
         });
     }
 
-    // ============================================
-    // SERVIÇOS (Apenas Leitura - Dados Fixos)
-    // ============================================
-
-    /**
-     * Lista todos os serviços
-     */
     async listarServicos() {
         return this.request('/api/servicos', {
             method: 'GET',
         });
     }
 
-    // ============================================
-    // AGENDAMENTOS
-    // ============================================
-
-    /**
-     * Lista agendamentos do usuário logado
-     */
     async listarMeusAgendamentos() {
         return this.request('/api/agendamentos/meus-agendamentos', {
             method: 'GET',
@@ -183,9 +117,6 @@ class ApiClient {
         });
     }
 
-    /**
-     * Cria novo agendamento
-     */
     async criarAgendamento(dados) {
         return this.request('/api/agendamentos', {
             method: 'POST',
@@ -194,9 +125,6 @@ class ApiClient {
         });
     }
 
-    /**
-     * Busca agendamento por ID
-     */
     async buscarAgendamento(id) {
         return this.request(`/api/agendamentos/${id}`, {
             method: 'GET',
@@ -204,9 +132,6 @@ class ApiClient {
         });
     }
 
-    /**
-     * Atualiza agendamento
-     */
     async atualizarAgendamento(id, dados) {
         return this.request(`/api/agendamentos/${id}`, {
             method: 'PUT',
@@ -215,9 +140,6 @@ class ApiClient {
         });
     }
 
-    /**
-     * Cancela agendamento
-     */
     async cancelarAgendamento(id) {
         return this.request(`/api/agendamentos/${id}/cancelar`, {
             method: 'PATCH',
@@ -226,31 +148,18 @@ class ApiClient {
         });
     }
 
-    // ============================================
-    // HORÁRIOS BLOQUEADOS
-    // ============================================
-
-    /**
-     * Lista todos os horários bloqueados
-     */
     async listarHorariosBloqueados() {
         return this.request('/api/horarios-bloqueados', {
             method: 'GET',
         });
     }
 
-    /**
-     * Lista horários bloqueados por data
-     */
     async listarHorariosBloqueadosPorData(data) {
         return this.request(`/api/horarios-bloqueados/data/${data}`, {
             method: 'GET',
         });
     }
 
-    /**
-     * Lista horários bloqueados por barbeiro e data
-     */
     async listarHorariosBloqueadosPorBarbeiroEData(nomeBarbeiro, data) {
         return this.request(
             `/api/horarios-bloqueados/buscar?nomeBarbeiro=${encodeURIComponent(nomeBarbeiro)}&data=${data}`,
@@ -261,8 +170,6 @@ class ApiClient {
     }
 }
 
-// Instância global da API
 const api = new ApiClient();
 
-// Torna disponível globalmente
 window.api = api;

@@ -1,20 +1,12 @@
-// ============================================
-// BARBEARIA STYLE - SCRIPT PRINCIPAL (HOME)
-// ============================================
-
 const COOKIE_CONSENT_KEY = 'cookieConsentAccepted';
 const BOOKING_DRAFT_KEY = 'bookingDraft';
 const LAST_VISIT_KEY = 'lastVisit';
 const VISIT_COUNT_KEY = 'visitCount';
 
-// Aguarda o carregamento completo do DOM
 document.addEventListener('DOMContentLoaded', function() {
     initApp();
 });
 
-/**
- * Inicializa todas as funcionalidades da aplicação
- */
 function initApp() {
     initVisitCookies();
     initCookieConsent();
@@ -31,21 +23,15 @@ function initApp() {
     initBarbersSection();
 }
 
-// ============================================
-// 1. SAUDAÇÃO DINÂMICA
-// ============================================
 function initGreeting() {
-    // Verifica se o usuário está autenticado
     const authToken = localStorage.getItem('authToken');
     const greetingContainer = document.querySelector('.greeting');
     const userNameElement = document.getElementById('userName');
 
-    // Sempre exibe a saudação
     if (greetingContainer) {
         greetingContainer.style.display = 'flex';
     }
 
-    // Se não estiver autenticado, exibe saudação simples
     if (!authToken) {
         if (userNameElement) {
             userNameElement.style.display = 'none';
@@ -55,25 +41,18 @@ function initGreeting() {
         return;
     }
 
-    // Se estiver autenticado, carrega dados do servidor SINCRONAMENTE
     try {
-        // ============================================
-        // COMUNICAÇÃO SÍNCRONA - XMLHttpRequest
-        // ============================================
         const xhr = new XMLHttpRequest();
-        xhr.open('GET', 'http://localhost:3003/api/usuarios/perfil', false); // false = SÍNCRONO
+        xhr.open('GET', 'http://localhost:3003/api/usuarios/perfil', false);
         xhr.setRequestHeader('Authorization', `Bearer ${authToken}`);
         xhr.setRequestHeader('Content-Type', 'application/json');
-        xhr.send(); // Bloqueia aqui até receber resposta do servidor
+        xhr.send();
 
-        // Verifica se a requisição foi bem-sucedida
         if (xhr.status === 200) {
             const userData = JSON.parse(xhr.responseText);
-            
-            // Atualiza localStorage com dados frescos do servidor
+
             localStorage.setItem('usuario', JSON.stringify(userData));
-            
-            // Exibe o nome do usuário
+
             if (userNameElement) {
                 userNameElement.style.display = 'inline';
                 const nomePartes = userData.nomeCompleto.split(' ');
@@ -81,11 +60,10 @@ function initGreeting() {
                 const inicialSobrenome = nomePartes.length > 1 ? nomePartes[nomePartes.length - 1].charAt(0) + '.' : '';
                 userNameElement.textContent = `${primeiroNome} ${inicialSobrenome}`;
             }
-            
+
             updateGreeting(true);
             setInterval(() => updateGreeting(true), 3600000);
         } else {
-            // Se falhar, usa localStorage como fallback
             const usuarioData = localStorage.getItem('usuario');
             if (usuarioData) {
                 const usuario = JSON.parse(usuarioData);
@@ -104,7 +82,6 @@ function initGreeting() {
         }
     } catch (error) {
         console.error('Erro ao carregar dados sincronamente:', error);
-        // Fallback para localStorage
         const usuarioData = localStorage.getItem('usuario');
         if (usuarioData) {
             const usuario = JSON.parse(usuarioData);
@@ -137,36 +114,27 @@ function initGreeting() {
 
         const greetingElement = document.getElementById('greeting');
         if (greetingElement) {
-            // Se estiver autenticado, adiciona vírgula após a saudação
             if (isAuthenticated) {
                 greetingElement.textContent = greeting + ',';
             } else {
-                // Se não estiver autenticado, não adiciona vírgula
                 greetingElement.textContent = greeting;
             }
         }
     }
 }
 
-// ============================================
-// 2. DROPDOWN DO USUÁRIO
-// ============================================
 function initUserDropdown() {
     const userBtn = document.querySelector('.user-btn');
     const dropdownMenu = document.querySelector('.dropdown-menu');
 
     if (!userBtn || !dropdownMenu) return;
 
-    // Verifica se o usuário está autenticado
     const authToken = localStorage.getItem('authToken');
     const usuarioData = localStorage.getItem('usuario');
 
-    // Atualiza o conteúdo do dropdown baseado no estado de autenticação
     if (!authToken || !usuarioData) {
-        // Não autenticado: mostra apenas opção de fazer login
         dropdownMenu.innerHTML = '<a href="/web/index/login.html">Fazer Login</a>';
     } else {
-        // Autenticado: mostra perfil e sair
         dropdownMenu.innerHTML = `
             <a href="/web/index/profile.html">Perfil</a>
             <a href="#" id="logoutLink">Sair</a>
@@ -178,7 +146,6 @@ function initUserDropdown() {
         const isVisible = dropdownMenu.style.display === 'block';
         dropdownMenu.style.display = isVisible ? 'none' : 'block';
 
-        // Adiciona animação
         if (!isVisible) {
             dropdownMenu.style.opacity = '0';
             dropdownMenu.style.transform = 'translateY(-10px)';
@@ -190,32 +157,25 @@ function initUserDropdown() {
         }
     });
 
-    // Fecha ao clicar fora
     window.addEventListener('click', (e) => {
         if (!userBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
             dropdownMenu.style.display = 'none';
         }
     });
 
-    // Adiciona evento de logout (se estiver autenticado)
     if (authToken && usuarioData) {
         const logoutLink = document.getElementById('logoutLink');
         if (logoutLink) {
             logoutLink.addEventListener('click', (e) => {
                 e.preventDefault();
-                // Remove dados de autenticação
                 localStorage.removeItem('authToken');
                 localStorage.removeItem('usuario');
-                // Redireciona para login
                 window.location.href = '/web/index/login.html';
             });
         }
     }
 }
 
-// ============================================
-// 3. HERO CAROUSEL
-// ============================================
 function initHeroCarousel() {
     const heroImages = [
         '/web/img/pic1.jpg',
@@ -234,17 +194,14 @@ function initHeroCarousel() {
     let topDiv = heroBg1;
     let bottomDiv = heroBg2;
 
-    // Preload das imagens
     heroImages.forEach(src => {
         const img = new Image();
         img.src = src;
     });
 
-    // Inicializa com a primeira imagem
     topDiv.style.backgroundImage = `url('${heroImages[currentHero]}')`;
     topDiv.classList.add('show');
 
-    // Troca de imagem a cada 5 segundos
     setInterval(() => {
         const nextHero = (currentHero + 1) % heroImages.length;
         bottomDiv.style.backgroundImage = `url('${heroImages[nextHero]}')`;
@@ -256,11 +213,7 @@ function initHeroCarousel() {
     }, 5000);
 }
 
-// ============================================
-// 4. NAVEGAÇÃO SUAVE
-// ============================================
 function initNavigation() {
-    // Menu hambúrguer
     const hamburger = document.querySelector('.hamburger');
     const navMenu = document.querySelector('.nav-menu');
 
@@ -270,7 +223,6 @@ function initNavigation() {
             hamburger.classList.toggle('active');
         });
 
-        // Fecha menu ao clicar em um link
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', () => {
                 navMenu.classList.remove('active');
@@ -279,7 +231,6 @@ function initNavigation() {
         });
     }
 
-    // Scroll suave para âncoras
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
@@ -287,7 +238,6 @@ function initNavigation() {
 
             e.preventDefault();
 
-            // Verifica se está tentando agendar sem estar autenticado
             if (href === '#booking') {
                 const authToken = localStorage.getItem('authToken');
                 const usuarioData = localStorage.getItem('usuario');
@@ -316,9 +266,6 @@ function initNavigation() {
     });
 }
 
-// ============================================
-// 5. SISTEMA DE CALENDÁRIO
-// ============================================
 function initCalendar() {
     const stepCalendar = document.getElementById('step-calendar');
     const calendarGrid = document.querySelector('.calendar-grid');
@@ -335,7 +282,6 @@ function initCalendar() {
     let currentMonth = today.getMonth();
     let currentYear = today.getFullYear();
 
-    // Renderiza o calendário
     function renderCalendar(month, year) {
         calendarGrid.innerHTML = '';
         calendarHeader.textContent = `${nomesMes[month]} ${year}`;
@@ -343,7 +289,6 @@ function initCalendar() {
         const firstDay = new Date(year, month, 1).getDay();
         const lastDate = new Date(year, month + 1, 0).getDate();
 
-        // Cabeçalhos dos dias da semana
         const dayHeaders = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
         dayHeaders.forEach(day => {
             const header = document.createElement('div');
@@ -352,14 +297,12 @@ function initCalendar() {
             calendarGrid.appendChild(header);
         });
 
-        // Espaços vazios antes do primeiro dia
         for (let i = 0; i < firstDay; i++) {
             const emptyDiv = document.createElement('div');
             emptyDiv.classList.add('calendar-day', 'empty');
             calendarGrid.appendChild(emptyDiv);
         }
 
-        // Dias do mês
         for (let day = 1; day <= lastDate; day++) {
             const dayDiv = document.createElement('div');
             dayDiv.classList.add('calendar-day');
@@ -371,7 +314,6 @@ function initCalendar() {
                 dayDiv.classList.add('disabled');
             }
 
-            // Destaca o dia de hoje
             if (dateObj.getTime() === today.getTime()) {
                 dayDiv.classList.add('today');
             }
@@ -380,7 +322,6 @@ function initCalendar() {
             calendarGrid.appendChild(dayDiv);
 
             dayDiv.addEventListener('click', () => {
-                // Verifica se o usuário está autenticado
                 const authToken = localStorage.getItem('authToken');
                 const usuarioData = localStorage.getItem('usuario');
 
@@ -401,26 +342,21 @@ function initCalendar() {
                 dayDiv.classList.add('selected');
 
                 const dataFormatada = `${diasSemana[dateObj.getDay()]}, ${day} de ${nomesMes[month]} de ${year}`;
-                
-                // Atualiza informações selecionadas
+
                 const selectedDateSpan = document.querySelector('.selected-date-info span');
                 const selectedInfoDate = document.querySelector('.selected-info p span');
-                
+
                 if (selectedDateSpan) selectedDateSpan.textContent = dataFormatada;
                 if (selectedInfoDate) selectedInfoDate.textContent = dataFormatada;
 
-                // Armazena a data selecionada
                 window.selectedDate = dateObj;
                 saveBookingDraft({
                     selectedDate: dateObj.toISOString(),
                 });
 
-                // Renderiza horários disponíveis
-                // Se houver barbeiro selecionado, filtra por ele
                 const barberName = window.selectedBarber ? window.selectedBarber.name : null;
                 renderTimeSlots(dateObj, barberName);
 
-                // Transição suave para próxima etapa
                 setTimeout(() => {
                     stepCalendar.classList.remove('active');
                     document.getElementById('step-time').classList.add('active');
@@ -430,7 +366,6 @@ function initCalendar() {
         }
     }
 
-    // Navegação entre meses
     if (navButtons.length >= 2) {
         navButtons[0].addEventListener('click', () => {
             if (currentMonth === today.getMonth() && currentYear === today.getFullYear()) {
@@ -455,13 +390,9 @@ function initCalendar() {
         });
     }
 
-    // Inicializa o calendário
     renderCalendar(currentMonth, currentYear);
 }
 
-// ============================================
-// 6. SISTEMA DE AGENDAMENTO
-// ============================================
 function initBookingSystem() {
     const stepTime = document.getElementById('step-time');
     const stepService = document.getElementById('step-service');
@@ -478,41 +409,33 @@ function initBookingSystem() {
     const workingHours = ['08:00', '08:30', '09:00', '09:30', '10:00', '10:30', '11:00', '11:30',
                          '13:00', '13:30', '14:00', '14:30', '15:00', '15:30', '16:00', '16:30', '17:00'];
 
-    // Renderiza horários disponíveis
     window.renderTimeSlots = async function(date, nomeBarbeiro = null) {
         if (!timeSlotsContainer) return;
 
         timeSlotsContainer.innerHTML = '';
 
-        // Adiciona loading
         const loading = document.createElement('div');
         loading.classList.add('loading-slots');
         loading.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Carregando horários...';
         timeSlotsContainer.appendChild(loading);
 
-        // Busca horários bloqueados para a data selecionada
         const dataFormatada = formatDateForAPI(date);
         let occupiedSlots = [];
 
         try {
             let horariosBloqueados;
 
-            // Se tem barbeiro selecionado, busca apenas os horários dele
             if (nomeBarbeiro) {
                 horariosBloqueados = await api.listarHorariosBloqueadosPorBarbeiroEData(nomeBarbeiro, dataFormatada);
             } else {
-                // Se não tem barbeiro, busca todos os horários bloqueados da data
                 horariosBloqueados = await api.listarHorariosBloqueadosPorData(dataFormatada);
             }
 
-            // Extrai apenas os horários
             occupiedSlots = horariosBloqueados.map(h => h.horario);
         } catch (error) {
             console.error('Erro ao buscar horários bloqueados:', error);
-            // Continua sem os horários bloqueados
         }
 
-        // Renderiza horários
         setTimeout(() => {
             timeSlotsContainer.innerHTML = '';
 
@@ -524,17 +447,14 @@ function initBookingSystem() {
                 const slotDate = new Date(date.getFullYear(), date.getMonth(), date.getDate(), parseInt(h), parseInt(m));
                 const now = new Date();
 
-                // Verifica se o horário já passou
                 if (slotDate < now) {
                     slot.classList.add('unavailable');
                     slot.title = 'Horário já passou';
                 }
-                // Se tem barbeiro selecionado E o horário está ocupado para esse barbeiro
                 else if (nomeBarbeiro && occupiedSlots.includes(hour)) {
                     slot.classList.add('unavailable-striked');
                     slot.title = `Horário ocupado para ${nomeBarbeiro}`;
                 }
-                // Horário disponível
                 else {
                     slot.title = 'Clique para selecionar';
                 }
@@ -543,13 +463,11 @@ function initBookingSystem() {
                 timeSlotsContainer.appendChild(slot);
 
                 slot.addEventListener('click', () => {
-                    // Horários passados não podem ser selecionados
                     if (slotDate < now) {
                         showNotification('Este horário já passou', 'error');
                         return;
                     }
 
-                    // Se tem barbeiro selecionado e o horário está ocupado
                     if (nomeBarbeiro && occupiedSlots.includes(hour)) {
                         showNotification(`Este horário não está disponível para ${nomeBarbeiro}`, 'error');
                         return;
@@ -564,12 +482,10 @@ function initBookingSystem() {
                     const selectedInfoTime = document.querySelector('.selected-info p:nth-child(2) span');
                     if (selectedInfoTime) selectedInfoTime.textContent = hour;
 
-                    // Se não há barbeiro selecionado, filtra os barbeiros disponíveis para este horário
                     if (!nomeBarbeiro && window.selectedDate) {
                         filterAvailableBarbers(window.selectedDate, hour);
                     }
 
-                    // Transição suave para próxima etapa
                     setTimeout(() => {
                         if (stepTime) stepTime.classList.remove('active');
                         if (stepService) stepService.classList.add('active');
@@ -578,7 +494,6 @@ function initBookingSystem() {
                 });
             });
 
-            // Animação de entrada
             const slots = timeSlotsContainer.querySelectorAll('.time-slot');
             slots.forEach((slot, index) => {
                 slot.style.opacity = '0';
@@ -623,14 +538,12 @@ function initBookingSystem() {
         });
     }
 
-    // Validação e submissão do formulário
     bookingForm.addEventListener('submit', function(e) {
         e.preventDefault();
 
         const service = document.getElementById('service');
         const barber = document.getElementById('barber');
 
-        // Validações
         if (!service.value) {
             showNotification('Por favor, selecione um serviço', 'error');
             service.focus();
@@ -648,7 +561,6 @@ function initBookingSystem() {
             return;
         }
 
-        // Mostra loading
         const submitBtn = bookingForm.querySelector('.submit-btn');
         const originalText = submitBtn.innerHTML;
         submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Agendando...';
@@ -659,19 +571,16 @@ function initBookingSystem() {
         const serviceText = service.selectedOptions[0].textContent;
         const barberText = barber.selectedOptions[0].textContent;
 
-        // Prepara dados para enviar à API
         const dadosAgendamento = {
             nomeBarbeiro: barberText,
-            nomeServico: serviceText.split(' - ')[0], // Remove o preço
-            data: formatDateForAPI(window.selectedDate), // YYYY-MM-DD
-            horario: window.selectedTime, // HH:MM
+            nomeServico: serviceText.split(' - ')[0],
+            data: formatDateForAPI(window.selectedDate),
+            horario: window.selectedTime,
             observacoes: document.getElementById('notes')?.value || undefined
         };
 
-        // Cria agendamento via API
         api.criarAgendamento(dadosAgendamento)
             .then(agendamento => {
-                // Preenche o popup
                 const popupDate = document.getElementById('popupDate');
                 const popupTime = document.getElementById('popupTime');
                 const popupService = document.getElementById('popupService');
@@ -682,7 +591,6 @@ function initBookingSystem() {
                 if (popupService) popupService.textContent = serviceText;
                 if (popupBarber) popupBarber.textContent = barberText;
 
-                // Exibe o popup
                 if (confirmationPopup) {
                     confirmationPopup.style.display = 'flex';
                     confirmationPopup.style.opacity = '0';
@@ -692,12 +600,10 @@ function initBookingSystem() {
                     }, 10);
                 }
 
-                // Reseta o formulário
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
                 bookingForm.reset();
 
-                // Limpa seleções
                 window.selectedDate = null;
                 window.selectedTime = null;
 
@@ -715,7 +621,6 @@ function initBookingSystem() {
             });
     });
 
-    // Fechar popup
     if (closePopup) {
         closePopup.addEventListener('click', function() {
             if (confirmationPopup) {
@@ -728,7 +633,6 @@ function initBookingSystem() {
             }
         });
 
-        // Fecha ao clicar fora do popup
         if (confirmationPopup) {
             confirmationPopup.addEventListener('click', function(e) {
                 if (e.target === confirmationPopup) {
@@ -738,7 +642,6 @@ function initBookingSystem() {
         }
     }
 
-    // Botões de voltar
     document.querySelectorAll('.btn-secondary[data-step-back]').forEach(btn => {
         btn.addEventListener('click', function() {
             const targetStep = this.getAttribute('data-step-back');
@@ -750,11 +653,9 @@ function initBookingSystem() {
 
             if (targetStep === 'calendar') {
                 document.getElementById('step-calendar').classList.add('active');
-                // Restaura lista completa de barbeiros ao voltar para o calendário
                 restoreAllBarbers();
             } else if (targetStep === 'time') {
                 document.getElementById('step-time').classList.add('active');
-                // Se voltar para seleção de horário sem barbeiro, restaura lista completa
                 if (!window.selectedBarber) {
                     restoreAllBarbers();
                 }
@@ -765,12 +666,9 @@ function initBookingSystem() {
     });
 }
 
-// ============================================
-// 7. INTERATIVIDADE DOS CARDS DE SERVIÇO
-// ============================================
 function initServiceCards() {
     const serviceCards = document.querySelectorAll('.service-card');
-    
+
     serviceCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-10px) scale(1.02)';
@@ -780,9 +678,7 @@ function initServiceCards() {
             this.style.transform = 'translateY(0) scale(1)';
         });
 
-        // Ao clicar, rola até o agendamento
         card.addEventListener('click', function() {
-            // Verifica se o usuário está autenticado
             const authToken = localStorage.getItem('authToken');
             const usuarioData = localStorage.getItem('usuario');
 
@@ -800,9 +696,6 @@ function initServiceCards() {
     });
 }
 
-// ============================================
-// 8. ANIMAÇÕES DE SCROLL
-// ============================================
 function initScrollAnimations() {
     const observerOptions = {
         threshold: 0.1,
@@ -818,7 +711,6 @@ function initScrollAnimations() {
         });
     }, observerOptions);
 
-    // Observa elementos para animação
     document.querySelectorAll('.service-card, .contact-item').forEach(el => {
         el.style.opacity = '0';
         el.style.transform = 'translateY(30px)';
@@ -827,15 +719,7 @@ function initScrollAnimations() {
     });
 }
 
-// ============================================
-// FUNÇÕES AUXILIARES
-// ============================================
-
-/**
- * Mostra notificação ao usuário
- */
 function showNotification(message, type = 'info') {
-    // Remove notificação anterior se existir
     const existing = document.querySelector('.notification');
     if (existing) existing.remove();
 
@@ -848,21 +732,16 @@ function showNotification(message, type = 'info') {
 
     document.body.appendChild(notification);
 
-    // Animação de entrada
     setTimeout(() => {
         notification.classList.add('show');
     }, 10);
 
-    // Remove após 3 segundos
     setTimeout(() => {
         notification.classList.remove('show');
         setTimeout(() => notification.remove(), 300);
     }, 3000);
 }
 
-/**
- * Scroll suave para uma seção
- */
 function scrollToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
@@ -877,9 +756,6 @@ function scrollToSection(sectionId) {
     }
 }
 
-// ============================================
-// 9. MODAL DE DETALHES DOS SERVIÇOS
-// ============================================
 function initServiceModal() {
     const serviceModal = document.getElementById('serviceModal');
     const closeModal = document.getElementById('closeServiceModal');
@@ -889,7 +765,6 @@ function initServiceModal() {
 
     if (!serviceModal) return;
 
-    // Dados dos serviços
     const servicesData = {
         corte: {
             title: 'Corte Masculino',
@@ -925,7 +800,6 @@ function initServiceModal() {
         }
     };
 
-    // Abre modal ao clicar no card ou botão
     serviceCards.forEach(card => {
         const detailsBtn = card.querySelector('.service-details-btn');
         if (detailsBtn) {
@@ -936,7 +810,6 @@ function initServiceModal() {
             });
         }
 
-        // Também abre ao clicar no card inteiro
         card.addEventListener('click', (e) => {
             if (e.target.classList.contains('service-details-btn')) return;
             const serviceId = card.getAttribute('data-service');
@@ -944,7 +817,6 @@ function initServiceModal() {
         });
     });
 
-    // Fecha modal
     if (closeModal) {
         closeModal.addEventListener('click', closeServiceModal);
     }
@@ -957,7 +829,6 @@ function initServiceModal() {
         });
     }
 
-    // Adicionar à calculadora
     if (addToCalculatorBtn) {
         addToCalculatorBtn.addEventListener('click', () => {
             const serviceId = addToCalculatorBtn.getAttribute('data-service');
@@ -969,7 +840,6 @@ function initServiceModal() {
         });
     }
 
-    // Agendar serviço
     if (bookServiceBtn) {
         bookServiceBtn.addEventListener('click', () => {
             const serviceId = bookServiceBtn.getAttribute('data-service');
@@ -988,7 +858,7 @@ function initServiceModal() {
         document.getElementById('modalServicePrice').textContent = data.price;
         document.getElementById('modalServiceDuration').textContent = data.duration;
         document.getElementById('modalServiceDescription').textContent = data.description;
-        
+
         const iconElement = document.getElementById('modalServiceIcon').querySelector('i');
         iconElement.className = `fas ${data.icon}`;
 
@@ -1000,7 +870,6 @@ function initServiceModal() {
             includesList.appendChild(li);
         });
 
-        // Atualiza botões com data-service
         if (addToCalculatorBtn) {
             addToCalculatorBtn.setAttribute('data-service', serviceId);
         }
@@ -1025,9 +894,6 @@ function initServiceModal() {
     window.closeServiceModal = closeServiceModal;
 }
 
-// ============================================
-// 10. CALCULADORA DE PREÇOS
-// ============================================
 function initPriceCalculator() {
     const checkboxes = document.querySelectorAll('.calculator-option input[type="checkbox"]');
     const selectedServicesList = document.getElementById('selectedServicesList');
@@ -1046,7 +912,6 @@ function initPriceCalculator() {
 
     checkboxes.forEach(checkbox => {
         checkbox.addEventListener('change', function() {
-            // Se o pacote for selecionado, desmarca e desabilita os serviços individuais
             if (this.value === 'corte_barba') {
                 const corte = document.querySelector('.calculator-option input[value="corte"]');
                 const barba = document.querySelector('.calculator-option input[value="barba"]');
@@ -1060,12 +925,10 @@ function initPriceCalculator() {
                 }
             }
 
-            // Se um serviço individual for marcado, garantir que o pacote não esteja marcado
             if (this.value === 'corte' || this.value === 'barba') {
                 const pacote = document.querySelector('.calculator-option input[value="corte_barba"]');
                 if (pacote && pacote.checked) {
                     pacote.checked = false;
-                    // ao desmarcar o pacote, reabilita os individuais
                     const corte = document.querySelector('.calculator-option input[value="corte"]');
                     const barba = document.querySelector('.calculator-option input[value="barba"]');
                     if (corte) corte.disabled = false;
@@ -1081,7 +944,6 @@ function initPriceCalculator() {
         bookSelectedBtn.addEventListener('click', () => {
             const selected = Array.from(checkboxes).filter(cb => cb.checked);
             if (selected.length > 0) {
-                // Se ambos 'corte' e 'barba' foram selecionados, tratar como pacote 'corte_barba'
                 const hasCorte = selected.some(cb => cb.value === 'corte');
                 const hasBarba = selected.some(cb => cb.value === 'barba');
                 const hasPacote = selected.some(cb => cb.value === 'corte_barba');
@@ -1095,11 +957,9 @@ function initPriceCalculator() {
                     serviceId = selected[0].value;
                 }
 
-                // Atualiza o select de serviço na área de agendamento
                 const serviceSelect = document.getElementById('service');
                 if (serviceSelect) {
                     serviceSelect.value = serviceId;
-                    // Mantém comportamento consistente chamando a função já existente
                     if (typeof window.selectServiceForBooking === 'function') {
                         window.selectServiceForBooking(serviceId);
                     }
@@ -1113,7 +973,7 @@ function initPriceCalculator() {
 
     function updateCalculator() {
         const selected = Array.from(checkboxes).filter(cb => cb.checked);
-        
+
         if (selected.length === 0) {
             selectedServicesList.innerHTML = '<p class="no-selection">Nenhum serviço selecionado</p>';
             subtotalElement.textContent = 'R$ 0,00';
@@ -1124,7 +984,6 @@ function initPriceCalculator() {
             return;
         }
 
-        // Lista de serviços selecionados
         selectedServicesList.innerHTML = '';
         selected.forEach(checkbox => {
             const serviceId = checkbox.value;
@@ -1138,25 +997,21 @@ function initPriceCalculator() {
             selectedServicesList.appendChild(div);
         });
 
-        // Calcula subtotal
         let subtotal = 0;
         selected.forEach(checkbox => {
             const price = parseFloat(checkbox.getAttribute('data-price'));
             subtotal += price;
         });
 
-        // Verifica desconto (se selecionar corte + barba separados, oferece desconto)
         let discount = 0;
         const hasCorte = selected.some(cb => cb.value === 'corte');
         const hasBarba = selected.some(cb => cb.value === 'barba');
         const hasPacote = selected.some(cb => cb.value === 'corte_barba');
 
         if (hasCorte && hasBarba && !hasPacote) {
-            // Se selecionou corte e barba separados, desconto de 5 reais
             discount = 5.00;
             discountLine.style.display = 'flex';
         } else if (hasPacote) {
-            // Se selecionou o pacote, já tem desconto embutido
             discountLine.style.display = 'none';
         } else {
             discountLine.style.display = 'none';
@@ -1167,7 +1022,7 @@ function initPriceCalculator() {
         subtotalElement.textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
         discountElement.textContent = `-R$ ${discount.toFixed(2).replace('.', ',')}`;
         totalElement.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
-        
+
         bookSelectedBtn.disabled = false;
     }
 
@@ -1175,19 +1030,15 @@ function initPriceCalculator() {
         const checkbox = document.querySelector(`.calculator-option input[value="${serviceId}"]`);
         if (checkbox && !checkbox.checked) {
             checkbox.checked = true;
-            // Dispara o evento change para aplicar a mesma lógica de habilitar/desabilitar
             checkbox.dispatchEvent(new Event('change'));
             showNotification('Serviço adicionado à calculadora!', 'success');
         }
     };
 }
 
-// ============================================
-// 11. SEÇÃO DE BARBEIROS
-// ============================================
 function initBarbersSection() {
     const barberCards = document.querySelectorAll('.barber-card');
-    
+
     barberCards.forEach(card => {
         card.addEventListener('mouseenter', function() {
             this.style.transform = 'translateY(-5px)';
@@ -1199,9 +1050,7 @@ function initBarbersSection() {
     });
 }
 
-// Função global para selecionar barbeiro
 window.selectBarber = function(barberId, barberName) {
-    // Verifica se o usuário está autenticado
     const authToken = localStorage.getItem('authToken');
     const usuarioData = localStorage.getItem('usuario');
 
@@ -1213,14 +1062,12 @@ window.selectBarber = function(barberId, barberName) {
         return;
     }
 
-    // Remove seleção de todos os cards de barbeiro
     document.querySelectorAll('.barber-card').forEach(card => {
         card.classList.remove('selected-barber');
         card.style.border = '';
         card.style.boxShadow = '';
     });
 
-    // Adiciona classe ao card selecionado
     const selectedCard = document.querySelector(`.barber-card[data-barber="${barberId}"]`);
     if (selectedCard) {
         selectedCard.classList.add('selected-barber');
@@ -1228,7 +1075,6 @@ window.selectBarber = function(barberId, barberName) {
         selectedCard.style.boxShadow = '0 8px 24px rgba(231, 76, 60, 0.3)';
     }
 
-    // Salva o barbeiro selecionado globalmente
     window.selectedBarber = {
         id: barberId,
         name: barberName
@@ -1241,7 +1087,6 @@ window.selectBarber = function(barberId, barberName) {
         scrollToSection('booking');
         showNotification(`Barbeiro ${barberName} selecionado! Agora escolha uma data.`, 'success');
 
-        // Se já estiver na etapa de serviço, destaca o select
         const stepService = document.getElementById('step-service');
         if (stepService && stepService.classList.contains('active')) {
             barberSelect.focus();
@@ -1252,10 +1097,8 @@ window.selectBarber = function(barberId, barberName) {
         }
     }
 
-    // Se já houver uma data selecionada, re-renderiza os horários com o filtro do barbeiro
     if (window.selectedDate) {
         renderTimeSlots(window.selectedDate, barberName);
-        // Volta para a etapa de horário se já passou
         const stepTime = document.getElementById('step-time');
         const stepCalendar = document.getElementById('step-calendar');
         const stepService = document.getElementById('step-service');
@@ -1271,9 +1114,7 @@ window.selectBarber = function(barberId, barberName) {
     }
 };
 
-// Função para selecionar serviço para agendamento
 window.selectServiceForBooking = function(serviceId) {
-    // Verifica se o usuário está autenticado
     const authToken = localStorage.getItem('authToken');
     const usuarioData = localStorage.getItem('usuario');
 
@@ -1293,21 +1134,15 @@ window.selectServiceForBooking = function(serviceId) {
     }
 };
 
-// ============================================
-// 12. COOKIES DE VISITA (ÚLTIMA VISITA E CONTADOR)
-// ============================================
 function initVisitCookies() {
-    // Lê ou inicializa o contador de visitas
     let visitCount = parseInt(getCookie(VISIT_COUNT_KEY), 10) || 0;
     visitCount++;
     setCookie(VISIT_COUNT_KEY, visitCount, 365);
 
-    // Lê a data da última visita
     const lastVisit = getCookie(LAST_VISIT_KEY);
     const agora = new Date();
     setCookie(LAST_VISIT_KEY, agora.toISOString(), 365);
 
-    // Se não é a primeira visita, exibe as informações
     if (lastVisit) {
         const ultimaData = new Date(lastVisit);
         const dataFormatada = ultimaData.toLocaleDateString('pt-BR', {
@@ -1318,7 +1153,6 @@ function initVisitCookies() {
             minute: '2-digit'
         });
 
-        // Delay para não interferir com outras notificações da inicialização
         setTimeout(() => {
             showNotification(
                 `Bem-vindo de volta! Visita #${visitCount} | Última vez: ${dataFormatada}`,
@@ -1445,9 +1279,6 @@ function getBarberNameById(barberId) {
     return barberMap[barberId] || null;
 }
 
-/**
- * Restaura a lista completa de barbeiros no select
- */
 function restoreAllBarbers() {
     const barberSelect = document.getElementById('barber');
     if (barberSelect) {
@@ -1469,22 +1300,16 @@ function restoreAllBarbers() {
     }
 }
 
-/**
- * Filtra barbeiros disponíveis baseado no horário selecionado
- */
 async function filterAvailableBarbers(date, horario) {
     const dataFormatada = formatDateForAPI(date);
 
     try {
-        // Busca todos os horários bloqueados para esta data
         const horariosBloqueados = await api.listarHorariosBloqueadosPorData(dataFormatada);
 
-        // Filtra apenas os horários bloqueados para o horário específico selecionado
         const barbeirosOcupados = horariosBloqueados
             .filter(h => h.horario === horario)
             .map(h => h.nomeBarbeiro);
 
-        // Lista de todos os barbeiros disponíveis
         const todosBarbeiros = [
             { id: 'luciano', name: 'Luciano Sousa Barbosa' },
             { id: 'pedro', name: 'Pedro Henrique Rodrigues' },
@@ -1492,18 +1317,14 @@ async function filterAvailableBarbers(date, horario) {
             { id: 'samuel', name: 'Samuel Torres' }
         ];
 
-        // Filtra apenas os barbeiros disponíveis (que não estão ocupados)
         const barbeirosDisponiveis = todosBarbeiros.filter(
             barbeiro => !barbeirosOcupados.includes(barbeiro.name)
         );
 
-        // Atualiza o select de barbeiros
         const barberSelect = document.getElementById('barber');
         if (barberSelect) {
-            // Limpa as opções atuais (exceto a primeira - placeholder)
             barberSelect.innerHTML = '<option value="">Selecione um barbeiro</option>';
 
-            // Adiciona apenas os barbeiros disponíveis
             barbeirosDisponiveis.forEach(barbeiro => {
                 const option = document.createElement('option');
                 option.value = barbeiro.id;
@@ -1511,7 +1332,6 @@ async function filterAvailableBarbers(date, horario) {
                 barberSelect.appendChild(option);
             });
 
-            // Se nenhum barbeiro está disponível
             if (barbeirosDisponiveis.length === 0) {
                 barberSelect.innerHTML = '<option value="">Nenhum barbeiro disponível neste horário</option>';
                 barberSelect.disabled = true;
@@ -1527,9 +1347,6 @@ async function filterAvailableBarbers(date, horario) {
     }
 }
 
-/**
- * Formata data para armazenamento
- */
 function formatDateForStorage(date) {
     if (!date) return '';
     const day = String(date.getDate()).padStart(2, '0');
@@ -1538,9 +1355,6 @@ function formatDateForStorage(date) {
     return `${day}/${month}/${year}`;
 }
 
-/**
- * Formata data para enviar à API (YYYY-MM-DD)
- */
 function formatDateForAPI(date) {
     if (!date) return '';
     const day = String(date.getDate()).padStart(2, '0');

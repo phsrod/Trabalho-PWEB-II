@@ -20,7 +20,6 @@ export class AutenticacaoService {
   constructor(private app: FastifyInstance) {}
 
   async cadastrar(dados: CadastroInput) {
-    // Verifica se o email já existe
     const usuarioExistente = await db
       .select()
       .from(usuarios)
@@ -31,22 +30,17 @@ export class AutenticacaoService {
       throw new Error('Email já cadastrado')
     }
 
-    // Em produção, usar bcrypt para hash da senha
-    // const senhaHash = await bcrypt.hash(dados.senha, 10)
-
-    // Por enquanto, vou deixar sem hash (APENAS PARA DESENVOLVIMENTO)
     const [novoUsuario] = await db
       .insert(usuarios)
       .values({
         nomeCompleto: dados.nomeCompleto,
         email: dados.email,
         telefone: dados.telefone,
-        senha: dados.senha, // TROCAR para senhaHash em produção
+        senha: dados.senha,
         dataNascimento: dados.dataNascimento,
       })
       .returning()
 
-    // Gera token JWT
     const token = this.app.jwt.sign(
       {
         id: novoUsuario.id,
@@ -80,15 +74,12 @@ export class AutenticacaoService {
       throw new Error('Email ou senha inválidos')
     }
 
-    // Em produção, usar bcrypt.compare
-    // const senhaValida = await bcrypt.compare(dados.senha, usuario.senha)
-    const senhaValida = dados.senha === usuario.senha // APENAS PARA DESENVOLVIMENTO
+    const senhaValida = dados.senha === usuario.senha
 
     if (!senhaValida) {
       throw new Error('Email ou senha inválidos')
     }
 
-    // Gera token JWT
     const token = this.app.jwt.sign(
       {
         id: usuario.id,

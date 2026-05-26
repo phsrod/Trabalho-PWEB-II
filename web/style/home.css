@@ -1,4 +1,3 @@
-/* Hero Section */
 .hero {
     position: relative;
     height: 100vh;
@@ -15,7 +14,6 @@ body.dark-mode .hero {
     color: #e0e0e0;
 }
 
-/* Divs do carrossel */
 .hero-bg {
     position: absolute;
     top: 0; left: 0;
@@ -31,14 +29,12 @@ body.dark-mode .hero {
     opacity: 1;
 }
 
-/* Conteúdo da hero acima do carrossel */
 .hero-content {
     position: relative;
     z-index: 1;
     text-align: center;
 }
 
-/* Texto e botão */
 .hero-content h1 {
     font-size: 3.5rem;
     margin-bottom: 1rem;
@@ -70,7 +66,7 @@ body.dark-mode .hero {
     box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
 }
 
-.user-dropdown {
+.cta-button:hover .user-dropdown {
     position: relative;
     display: inline-block;
 }
@@ -79,7 +75,7 @@ body.dark-mode .hero {
     background: none;
     border: none;
     cursor: pointer;
-    font-size: 1.5rem; /* tamanho do ícone */
+    font-size: 1.5rem;
     color: #f0f0f0;
     transition: color 0.3s;
 }
@@ -114,27 +110,6 @@ body.dark-mode .hero {
 .dropdown-menu a:hover {
     background: #f0f0f0;
 }
-
-
-.cta-button {
-    display: inline-block;
-    background: #e74c3c;
-    color: white;
-    padding: 15px 30px;
-    text-decoration: none;
-    border-radius: 50px;
-    font-weight: bold;
-    font-size: 1.1rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-}
-
-.cta-button:hover {
-    background: #c0392b;
-    transform: translate3d(0, -2px, 0); /* Usa translate3d para aceleração de hardware */
-    box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
-}
-
 /* Services Section */
 .services {
     padding: 80px 0;
@@ -164,11 +139,11 @@ body.dark-mode .hero {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     border: 2px solid transparent;
     will-change: transform;
-    transform: translateZ(0); /* Força aceleração de hardware */
+    transform: translateZ(0);
 }
 
 .service-card:hover {
-    transform: translate3d(0, -10px, 0); /* Usa translate3d para aceleração de hardware */
+    transform: translate3d(0, -10px, 0);
     box-shadow: 0 15px 30px rgba(0,0,0,0.15);
     border-color: #e74c3c;
 }
@@ -196,7 +171,6 @@ body.dark-mode .hero {
     color: #e74c3c;
 }
 
-/* Booking Section */
 .booking-section {
     padding: 80px 0;
     background: #f8f9fa;
@@ -209,7 +183,6 @@ body.dark-mode .hero {
     color: #2c3e50;
 }
 
-/* Booking Steps System */
 .booking-step {
     display: none;
     background: white;
@@ -232,7 +205,6 @@ body.dark-mode .hero {
     position: relative;
 }
 
-/* Calendar Styles */
 .calendar-container {
     max-width: 500px;
     margin: 0 auto;
@@ -329,14 +301,6 @@ body.dark-mode .hero {
     cursor: default;
 }
 
-/* Example selected day */
-.calendar-day:nth-child() {
-    background: #e74c3c;
-    color: white;
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-}
-
-/* Time Selection Styles */
 .selected-date-info {
     background: #e8f4fd;
     padding: 1rem;
@@ -417,14 +381,6 @@ body.dark-mode .hero {
     transform: translateY(-50%);
 }
 
-/* Example selected time slot */
-.time-slot:nth-child() {
-    background: #e74c3c;
-    color: white;
-    border-color: #c0392b;
-    box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
-}
-
 /* Selected Info Display */
 .selected-info {
     background: #f8f9fa;
@@ -443,7 +399,6 @@ body.dark-mode .hero {
     color: #e74c3c;
 }
 
-/* Step Navigation */
 .step-navigation {
     display: flex;
     gap: 1rem;
@@ -606,9 +561,6 @@ body.dark-mode .hero {
     transform: rotate(90deg);
 }
 
-
-
-/* Animações */
 @keyframes fadeInUp {
     from {
         opacity: 0;
@@ -636,7 +588,6 @@ body.dark-mode .hero {
     animation-delay: 0.3s;
 }
 
-/* Responsive Design para Home */
 @media (max-width: 768px) {
     .hero-content h1 {
         font-size: 2.5rem;
@@ -684,7 +635,6 @@ body.dark-mode .hero {
     }
 }
 
-/* Responsive Calendar */
 @media (max-width: 768px) {
     .calendar-container {
         padding: 1rem;
@@ -744,9 +694,6 @@ body.dark-mode .hero {
     }
 }
 
-/* ============================================
-   SEÇÃO DE BARBEIROS
-   ============================================ */
 .barbers-section {
     padding: 80px 0;
     background: #f8f9fa;
@@ -894,9 +841,6 @@ body.dark-mode .hero {
     box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
 }
 
-/* ============================================
-   MODAL DE SERVIÇOS
-   ============================================ */
 .service-modal {
     position: fixed;
     top: 0;
@@ -1032,9 +976,6 @@ body.dark-mode .hero {
     flex: 1;
 }
 
-/* ============================================
-   CALCULADORA DE PREÇOS
-   ============================================ */
 .calculator-section {
     padding: 80px 0;
     background: white;
@@ -1064,10 +1005,9 @@ body.dark-mode .hero {
     border-radius: 15px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.1);
 }
-/* Estilo para o modo escuro */
 body.dark-mode .calculator-services h3,
 body.dark-mode .calculator-result h3 {
-    color: #bfc4cb; /* Cor para o modo escuro */
+    color: #bfc4cb;
 }
 
 .calculator-services h3,
@@ -1106,9 +1046,8 @@ body.dark-mode .calculator-result h3 {
     cursor: pointer;
     accent-color: #e74c3c;
 }
-/* Estilo para o modo escuro */
 body.dark-mode .calculator-option span {
-    color: #bfc4cb; /* Cor para o modo escuro */
+    color: #bfc4cb;
 }
 
 .calculator-option span {
@@ -1213,7 +1152,6 @@ body.dark-mode .calculator-option span {
     color: white;
 }
 
-/* Modo Escuro - Estilos Específicos Home */
 body.dark-mode .hero-bg {
     opacity: 0.7;
 }
@@ -1286,7 +1224,6 @@ body.dark-mode .service-price {
     color: #e74c3c;
 }
 
-/* Responsive */
 @media (max-width: 768px) {
     .barbers-grid {
         grid-template-columns: 1fr;
@@ -1312,18 +1249,12 @@ body.dark-mode .service-price {
         margin-left: 0.5rem;
     }
 }
-
-
-/* --- INÍCIO DAS REGRAS DE MODO ESCURO ADICIONADAS --- */
-
-/* Textos Gerais */
 body.dark-mode .services h2,
 body.dark-mode .booking-section h2,
 body.dark-mode .barbers-section h2 {
     color: white;
 }
 
-/* Serviços */
 body.dark-mode .service-card h3 {
     color: white;
 }
@@ -1332,7 +1263,6 @@ body.dark-mode .service-card p {
     color: #ccc; /* Um cinza claro para contraste */
 }
 
-/* Calendário e Seleção de Horário */
 body.dark-mode .calendar-header h4,
 body.dark-mode .calendar-day-header,
 body.dark-mode .calendar-day {
@@ -1376,7 +1306,6 @@ body.dark-mode .time-slot.unavailable-striked {
     color: #555;
 }
 
-/* Informações Selecionadas */
 body.dark-mode .selected-date-info {
     background: #252525;
 }
@@ -1390,7 +1319,6 @@ body.dark-mode .selected-info {
     background: #252525;
 }
 
-/* Pop-up de Confirmação */
 body.dark-mode .popup-content {
     background-color: #2d2d2d;
     box-shadow: 0 10px 40px rgba(0,0,0,0.5);
@@ -1413,7 +1341,6 @@ body.dark-mode .close-btn:hover {
     background: #3a3a3a;
 }
 
-/* Barbeiros */
 body.dark-mode .barber-card {
     background: #2d2d2d;
     box-shadow: 0 5px 20px rgba(0,0,0,0.5);
@@ -1433,7 +1360,6 @@ body.dark-mode .service-tag {
     border: 1px solid #444;
 }
 
-/* Modal de Serviços */
 body.dark-mode .modal-content-service {
     background: #2d2d2d;
     box-shadow: 0 10px 40px rgba(0,0,0,0.5);

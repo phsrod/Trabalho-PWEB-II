@@ -6,14 +6,12 @@ import { registrarRotas } from './routes/index.ts'
 
 export const app = fastify()
 
-// Configuração de CORS
 app.register(fastifyCors, {
   origin: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH'],
   credentials: true,
 })
 
-// Configuração de JWT
 app.register(fastifyJwt, {
   secret: 'segredo-que-nao-pode-ser-revelado',
   sign: {
@@ -21,19 +19,15 @@ app.register(fastifyJwt, {
   },
 })
 
-// Configuração de Rate Limit — proteção contra força bruta e sobrecarga
 app.register(rateLimit, {
   max: 100,
   timeWindow: '1 minute',
 })
 
-// Rota de health check
 app.get('/ping', async (_, reply) => reply.send({ message: 'pong' }))
 
-// Registrar todas as rotas
 app.register(registrarRotas)
 
-// Iniciar o servidor
 app
   .listen({
     host: '0.0.0.0',

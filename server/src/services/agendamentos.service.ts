@@ -77,7 +77,6 @@ export class AgendamentosService {
   }
 
   async criar(dados: CriarAgendamentoInput) {
-    // Verifica se usuário existe
     const [usuario] = await db
       .select()
       .from(usuarios)
@@ -88,7 +87,6 @@ export class AgendamentosService {
       throw new Error('Usuário não encontrado')
     }
 
-    // Cria o agendamento
     const [novoAgendamento] = await db
       .insert(agendamentos)
       .values({
@@ -102,7 +100,6 @@ export class AgendamentosService {
       })
       .returning()
 
-    // Cria o horário bloqueado para esse barbeiro
     await this.horariosBloqueadosService.criar({
       nomeBarbeiro: dados.nomeBarbeiro,
       data: dados.data,
@@ -140,8 +137,6 @@ export class AgendamentosService {
       .where(eq(agendamentos.id, id))
       .returning()
 
-    // Tenta deletar o horário bloqueado correspondente
-    // Se não existir, apenas ignora o erro (não impede o cancelamento)
     try {
       await this.horariosBloqueadosService.deletarPorBarbeiroDataHorario(
         agendamento.nomeBarbeiro,
@@ -149,7 +144,6 @@ export class AgendamentosService {
         agendamento.horario
       )
     } catch (error) {
-      // Não lança erro, apenas ignora
     }
 
     return agendamentoCancelado
