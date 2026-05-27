@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm'
 import { db } from '../db/index.ts'
 import { usuarios } from '../db/schema/index.ts'
 import type { FastifyInstance } from 'fastify'
+import bcrypt from 'bcrypt'
 
 interface CadastroInput {
   nomeCompleto: string
@@ -30,13 +31,15 @@ export class AutenticacaoService {
       throw new Error('Email já cadastrado')
     }
 
+    const senhaHash = await bcrypt.hash(dados.senha, 10)
+
     const [novoUsuario] = await db
       .insert(usuarios)
       .values({
         nomeCompleto: dados.nomeCompleto,
         email: dados.email,
         telefone: dados.telefone,
-        senha: dados.senha,
+        senha: senhaHash,
         dataNascimento: dados.dataNascimento,
       })
       .returning()
@@ -74,7 +77,7 @@ export class AutenticacaoService {
       throw new Error('Email ou senha inválidos')
     }
 
-    const senhaValida = dados.senha === usuario.senha
+    const senhaValida = await bcrypt.compare(dados.senha, usuario.senha)
 
     if (!senhaValida) {
       throw new Error('Email ou senha inválidos')

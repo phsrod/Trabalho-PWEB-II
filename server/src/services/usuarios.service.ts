@@ -1,6 +1,7 @@
 import { eq } from 'drizzle-orm'
 import { db } from '../db/index.ts'
 import { usuarios } from '../db/schema/index.ts'
+import bcrypt from 'bcrypt'
 
 interface AtualizarUsuarioInput {
   nomeCompleto?: string
@@ -45,7 +46,7 @@ export class UsuariosService {
       dadosAtualizacao.observacoes = dados.observacoes
 
     if (dados.senha) {
-      dadosAtualizacao.senha = dados.senha
+      dadosAtualizacao.senha = await bcrypt.hash(dados.senha, 10)
     }
 
     const [usuarioAtualizado] = await db
