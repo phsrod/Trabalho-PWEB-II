@@ -84,16 +84,19 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Normalizar nome do repositório
+        run: echo "REPO_LOWER=$(echo '${{ github.repository }}' | tr '[:upper:]' '[:lower:]')" >> $GITHUB_ENV
+
       - name: Build e push — API
         run: |
-          IMAGE=ghcr.io/${{ github.repository }}/barbearia-api
+          IMAGE=ghcr.io/${REPO_LOWER}/barbearia-api
           docker build -f Dockerfile.api -t "$IMAGE:${{ github.sha }}" -t "$IMAGE:latest" ./server
           docker push "$IMAGE:${{ github.sha }}"
           docker push "$IMAGE:latest"
 
       - name: Build e push — Web
         run: |
-          IMAGE=ghcr.io/${{ github.repository }}/barbearia-web
+          IMAGE=ghcr.io/${REPO_LOWER}/barbearia-web
           docker build -f Dockerfile.web -t "$IMAGE:${{ github.sha }}" -t "$IMAGE:latest" .
           docker push "$IMAGE:${{ github.sha }}"
           docker push "$IMAGE:latest"
@@ -104,7 +107,7 @@ jobs:
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "| Imagem | Tag |" >> $GITHUB_STEP_SUMMARY
           echo "|--------|-----|" >> $GITHUB_STEP_SUMMARY
-          echo "| \`ghcr.io/${{ github.repository }}/barbearia-api\` | \`${{ github.sha }}\`, \`latest\` |" >> $GITHUB_STEP_SUMMARY
-          echo "| \`ghcr.io/${{ github.repository }}/barbearia-web\` | \`${{ github.sha }}\`, \`latest\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| \`ghcr.io/${REPO_LOWER}/barbearia-api\` | \`${{ github.sha }}\`, \`latest\` |" >> $GITHUB_STEP_SUMMARY
+          echo "| \`ghcr.io/${REPO_LOWER}/barbearia-web\` | \`${{ github.sha }}\`, \`latest\` |" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "Imagens publicadas no **GitHub Packages** (aba Packages do repositório)." >> $GITHUB_STEP_SUMMARY
