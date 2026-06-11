@@ -8,7 +8,7 @@ services:
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: barbearia_db
     volumes:
-      - pgdata:/var/lib/postgresql/data
+      - pgdata:/var/lib/postgresql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
@@ -29,8 +29,8 @@ services:
 
   web:
     build:
-      context: ./web
-      dockerfile: ../Dockerfile.web
+      context: .
+      dockerfile: Dockerfile.web
     ports:
       - "8080:80"
     depends_on:

@@ -1,26 +1,6 @@
 FROM nginx:alpine
 
-COPY . /usr/share/nginx/html
-
-COPY <<"EOF" /etc/nginx/conf.d/default.conf
-server {
-    listen 80;
-    server_name localhost;
-
-    root /usr/share/nginx/html;
-    index index/home.html;
-
-    # Remove o prefixo /web das URLs para que /web/style/common.css
-    # procure por /usr/share/nginx/html/style/common.css
-    location /web/ {
-        rewrite ^/web/(.*)$ /$1 break;
-        try_files $uri =404;
-    }
-
-    location / {
-        try_files $uri $uri/ /index/home.html;
-    }
-}
-EOF
+COPY web/ /usr/share/nginx/html/web
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

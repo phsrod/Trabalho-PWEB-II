@@ -1,174 +1,198 @@
-# 🎯 Barbearia Style - Sistema de Agendamento Online
+# Barbearia Style — Sistema de Agendamento Online
 
-Sistema web completo para gerenciamento de agendamentos de uma barbearia, desenvolvido como trabalho acadêmico para a disciplina de Programação Web II. A aplicação permite que clientes visualizem serviços, barbeiros, realizem agendamentos online e gerenciem seu perfil de forma intuitiva e moderna.
+Sistema web full-stack para gerenciamento de agendamentos de uma barbearia, desenvolvido como trabalho acadêmico da disciplina **Programação Web II** (UFPI). O projeto permite que clientes visualizem serviços e barbeiros, realizem agendamentos online, gerenciem o perfil e acompanhem o histórico de reservas.
 
 ---
 
-## 📋 Índice
+## Índice
 
 - [Visão Geral](#visão-geral)
-- [Arquitetura do Sistema](#arquitetura-do-sistema)
-- [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Funcionalidades Implementadas](#funcionalidades-implementadas)
+- [Funcionalidades](#funcionalidades)
+- [Arquitetura](#arquitetura)
+  - [Containers Docker](#containers-docker-docker-compose)
+- [Tecnologias](#tecnologias)
 - [Estrutura do Projeto](#estrutura-do-projeto)
-- [Como Funciona](#como-funciona)
 - [Instalação e Execução](#instalação-e-execução)
-- [API Endpoints](#api-endpoints)
+- [API REST](#api-rest)
 - [Banco de Dados](#banco-de-dados)
+- [Fases do Trabalho Acadêmico](#fases-do-trabalho-acadêmico)
+- [Notas Técnicas](#notas-técnicas)
+- [Licença e Autores](#licença-e-autores)
 
 ---
 
-## 🎯 Visão Geral
+## Visão Geral
 
-O **Barbearia Style** é uma aplicação web full-stack que oferece uma solução completa para gerenciamento de agendamentos de uma barbearia. O sistema foi desenvolvido seguindo as melhores práticas de desenvolvimento web, com separação clara entre front-end e back-end, utilizando uma arquitetura em camadas (MVC) e padrões RESTful para a API.
+A aplicação é dividida em dois módulos principais:
 
-### Objetivos do Projeto
+| Módulo | Descrição | Porta |
+|--------|-----------|-------|
+| **Front-end** (`web/`) | Interface estática servida pelo Nginx | `8080` |
+| **Back-end** (`server/`) | API REST com Fastify e PostgreSQL | `3003` |
 
-- ✅ Permitir que clientes visualizem serviços e barbeiros disponíveis
-- ✅ Facilitar o agendamento de horários de forma online e intuitiva
-- ✅ Gerenciar perfil do usuário e histórico de agendamentos
-- ✅ Implementar sistema de autenticação seguro com JWT
-- ✅ Controlar horários bloqueados e disponibilidade de barbeiros
-- ✅ Oferecer interface responsiva e moderna
+O front-end consome a API via `Fetch`, armazena o token JWT no `localStorage` e protege páginas restritas com `auth-guard.js`. Serviços e barbeiros são exibidos estaticamente no HTML da home; os agendamentos, autenticação e horários bloqueados são persistidos no banco de dados.
 
 ---
 
-## 🏗️ Arquitetura do Sistema
+## Funcionalidades
 
-O sistema foi desenvolvido seguindo uma **arquitetura em camadas (Layered Architecture)** com separação clara de responsabilidades entre front-end e back-end.
+### Autenticação
 
-### Diagrama de Arquitetura Geral
+- Cadastro de usuários com validação (Zod) e senha hasheada com **bcrypt**
+- Login com geração de JWT (validade de 7 dias)
+- Verificação de token em rotas protegidas
+- Rate limit no login: **5 tentativas por minuto** por IP
+- Guard de rotas no front-end (`auth-guard.js`)
+
+### Perfil do Usuário
+
+- Visualização e edição de dados pessoais
+- Histórico de agendamentos
+- Exclusão de conta
+
+### Agendamentos
+
+- Calendário interativo para seleção de data e horário
+- Consulta de horários bloqueados por barbeiro e data
+- Criação de agendamento (requer login)
+- Cancelamento com desbloqueio automático do horário
+- Status: `pendente`, `confirmado`, `concluido`, `cancelado`, `futuro`
+
+### Interface
+
+- Design responsivo (desktop, tablet e mobile)
+- Tema claro/escuro com persistência no `localStorage`
+- Calculadora de preços com desconto em pacotes
+- Cookies de visita (contador e última visita)
+- Rascunho de agendamento em `sessionStorage`
+- Saudação dinâmica por horário do dia
+- Botão de contato via WhatsApp
+- Carrossel, modais e animações de scroll
+
+---
+
+## Arquitetura
+
+### Visão geral
 
 ```mermaid
 graph TB
-    subgraph "Cliente (Front-end)"
-        A[HTML/CSS/JavaScript]
-        B[API Client]
-        C[LocalStorage]
+    subgraph Cliente
+        HTML[HTML/CSS/JS]
+        API_CLIENT[api.js]
+        STORAGE[localStorage / sessionStorage]
     end
-    
-    subgraph "Servidor (Back-end)"
-        D[Fastify Server]
-        E[Routes Layer]
-        F[Controllers Layer]
-        G[Services Layer]
-        H[Database Layer]
+
+    subgraph Servidor
+        FASTIFY[Fastify]
+        ROUTES[Routes]
+        CONTROLLERS[Controllers]
+        SERVICES[Services]
+        DRIZZLE[Drizzle ORM]
     end
-    
-    subgraph "Banco de Dados"
-        I[(PostgreSQL)]
+
+    subgraph Dados
+        PG[(PostgreSQL)]
     end
-    
-    A --> B
-    B --> C
-    B -->|HTTP/REST| D
-    D --> E
-    E --> F
-    F --> G
-    G --> H
-    H --> I
-    I --> H
-    H --> G
-    G --> F
-    F --> E
-    E --> D
-    D -->|JSON| B
-    B --> A
+
+    HTML --> API_CLIENT
+    API_CLIENT --> STORAGE
+    API_CLIENT -->|HTTP/JSON| FASTIFY
+    FASTIFY --> ROUTES --> CONTROLLERS --> SERVICES --> DRIZZLE --> PG
 ```
 
-### Arquitetura em Camadas (Back-end)
+### Containers Docker (Docker Compose)
+
+Ao executar `docker compose up`, a aplicação sobe em **três containers** independentes, orquestrados pelo Docker Compose:
+
+```mermaid
+graph TB
+    subgraph Cliente
+        NAV[Navegador]
+    end
+
+    subgraph DockerCompose["Docker Compose"]
+        subgraph WebContainer["Container: web — porta 8080"]
+            NGINX[Nginx]
+            STATIC[HTML / CSS / JavaScript]
+            NGINX --- STATIC
+        end
+
+        subgraph ApiContainer["Container: api — porta 3003"]
+            NODE[Node.js + Fastify + TypeScript]
+            DRIZZLE[Drizzle ORM]
+            NODE --- DRIZZLE
+        end
+
+        subgraph BdContainer["Container: bd — porta 5432"]
+            PG[(PostgreSQL 18)]
+            VOL[(Volume pgdata)]
+            PG --- VOL
+        end
+    end
+
+    NAV -->|"HTTP :8080"| NGINX
+    NAV -->|"API REST :3003"| NODE
+    DRIZZLE -->|"DATABASE_URL"| PG
+
+    WebContainer -.->|depends_on| ApiContainer
+    ApiContainer -.->|depends_on + healthcheck| BdContainer
+```
+
+| Container | Imagem / Build | Porta exposta | Função |
+|-----------|----------------|---------------|--------|
+| **bd** | `postgres:18` | `5432` | Banco de dados relacional com volume persistente (`pgdata`) |
+| **api** | `Dockerfile.api` | `3003` | API REST; executa migrações na inicialização e conecta ao host `bd` |
+| **web** | `Dockerfile.web` | `8080` → `80` | Front-end estático servido pelo Nginx |
+
+O navegador acessa o front-end pela porta **8080** e a API diretamente pela porta **3003** (conforme `API_BASE_URL` em `web/script/api.js`). Dentro da rede Docker, a API se conecta ao banco pelo hostname **`bd`**.
+
+### Camadas do back-end
 
 ```mermaid
 graph LR
-    subgraph "Camada de Apresentação"
-        A[Routes]
-    end
-    
-    subgraph "Camada de Controle"
-        B[Controllers]
-    end
-    
-    subgraph "Camada de Negócio"
-        C[Services]
-    end
-    
-    subgraph "Camada de Dados"
-        D[Database Schema]
-        E[Drizzle ORM]
-    end
-    
-    A -->|Validação| B
-    B -->|Lógica de Negócio| C
-    C -->|Queries| E
-    E -->|SQL| D
-    D -->|Resultados| E
-    E -->|Dados| C
-    C -->|Resposta| B
-    B -->|JSON| A
+    A[Routes] --> B[Controllers]
+    B --> C[Services]
+    C --> D[Drizzle ORM]
+    D --> E[(PostgreSQL)]
 ```
 
-### Fluxo de Autenticação
+| Camada | Responsabilidade |
+|--------|------------------|
+| **Routes** | Definição dos endpoints e prefixos |
+| **Controllers** | Validação de entrada (Zod) e respostas HTTP |
+| **Services** | Regras de negócio |
+| **Database** | Schemas, migrações e queries via Drizzle |
+
+### Fluxo de agendamento
 
 ```mermaid
 sequenceDiagram
-    participant C as Cliente
-    participant F as Front-end
-    participant API as Back-end API
-    participant DB as Banco de Dados
-    
-    C->>F: Preenche formulário de login
-    F->>API: POST /auth/login
-    API->>DB: Verifica credenciais
-    DB-->>API: Dados do usuário
-    API->>API: Gera JWT Token
-    API-->>F: Token + Dados do usuário
-    F->>F: Armazena no localStorage
-    F->>C: Redireciona para home
-    
-    Note over F: Próximas requisições
-    F->>API: GET /api/usuarios/perfil<br/>Header: Authorization: Bearer {token}
-    API->>API: Valida JWT Token
-    API->>DB: Busca dados do usuário
-    DB-->>API: Dados do usuário
-    API-->>F: Dados do perfil
-```
+    participant U as Usuário
+    participant FE as Front-end
+    participant API as API
+    participant DB as PostgreSQL
 
-### Fluxo de Agendamento
-
-```mermaid
-sequenceDiagram
-    participant C as Cliente
-    participant F as Front-end
-    participant API as Back-end API
-    participant DB as Banco de Dados
-    
-    C->>F: Seleciona data, horário, serviço e barbeiro
-    F->>API: GET /api/horarios-bloqueados/buscar<br/>?nomeBarbeiro=X&data=Y
+    U->>FE: Seleciona data, horário, serviço e barbeiro
+    FE->>API: GET /api/horarios-bloqueados/buscar
     API->>DB: Consulta horários bloqueados
-    DB-->>API: Lista de horários bloqueados
-    API-->>F: Horários disponíveis
-    
-    F->>F: Valida disponibilidade no front-end
-    
-    C->>F: Confirma agendamento
-    F->>API: POST /api/agendamentos<br/>Header: Authorization: Bearer {token}
-    API->>API: Valida JWT Token
-    API->>DB: Verifica se usuário existe
-    DB-->>API: Usuário válido
-    API->>DB: Cria agendamento
-    API->>DB: Cria horário bloqueado
-    DB-->>API: Agendamento criado
-    API-->>F: Confirmação do agendamento
-    F->>C: Exibe mensagem de sucesso
+    DB-->>API: Horários indisponíveis
+    API-->>FE: Lista de bloqueios
+
+    U->>FE: Confirma agendamento
+    FE->>API: POST /api/agendamentos (JWT)
+    API->>DB: INSERT agendamento
+    API->>DB: INSERT horário bloqueado
+    DB-->>API: Confirmação
+    API-->>FE: Agendamento criado
 ```
 
-### Modelo de Dados (ER)
+### Modelo de dados
 
 ```mermaid
 erDiagram
     USUARIOS ||--o{ AGENDAMENTOS : possui
-    AGENDAMENTOS }o--|| HORARIOS_BLOQUEADOS : gera
-    
+
     USUARIOS {
         uuid id PK
         text nome_completo
@@ -180,7 +204,7 @@ erDiagram
         timestamp criado_em
         timestamp atualizado_em
     }
-    
+
     AGENDAMENTOS {
         uuid id PK
         uuid usuario_id FK
@@ -193,7 +217,7 @@ erDiagram
         timestamp criado_em
         timestamp atualizado_em
     }
-    
+
     HORARIOS_BLOQUEADOS {
         uuid id PK
         text nome_barbeiro
@@ -205,483 +229,185 @@ erDiagram
     }
 ```
 
+> **Nota:** `horarios_bloqueados` não possui FK direta para `agendamentos`. O vínculo é lógico — ao criar um agendamento, um bloqueio é inserido; ao cancelar, o bloqueio correspondente é removido.
+
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## Tecnologias
 
 ### Front-end
 
-| Tecnologia | Versão | Uso |
-|------------|--------|-----|
-| **HTML5** | - | Estruturação das páginas |
-| **CSS3** | - | Estilização e responsividade |
-| **JavaScript (ES6+)** | - | Interatividade e consumo da API |
-| **Font Awesome** | 6.0.0 | Ícones e elementos visuais |
-| **Fetch API** | Nativo | Comunicação com o back-end |
-| **LocalStorage** | Nativo | Armazenamento de token e dados do usuário |
-| **SessionStorage** | Nativo | Rascunho de agendamento (bookingDraft) |
-| **Cookies (document.cookie)** | Nativo | Consentimento de cookies, última visita e contador de visitas |
+| Tecnologia | Uso |
+|------------|-----|
+| HTML5, CSS3, JavaScript (ES6+) | Estrutura, estilo e interatividade |
+| Fetch API | Comunicação com o back-end |
+| Font Awesome 6 | Ícones |
+| localStorage | Token JWT e preferências do usuário |
+| sessionStorage | Rascunho de agendamento (`bookingDraft`) |
+| Cookies | Consentimento, contador de visitas e última visita |
 
 ### Back-end
 
 | Tecnologia | Versão | Uso |
 |------------|--------|-----|
-| **Node.js** | 18+ | Runtime JavaScript |
-| **TypeScript** | 5.9.3 | Linguagem de programação |
-| **Fastify** | 5.6.2 | Framework web rápido e eficiente |
-| **Drizzle ORM** | 0.44.7 | ORM para PostgreSQL |
-| **PostgreSQL** | 18 | Banco de dados relacional |
-| **Zod** | 4.1.13 | Validação de schemas |
-| **JWT** | 10.0.0 | Autenticação baseada em tokens |
-| **Rate Limit** | - | Controle de requisições (5 tentativas/min no login) |
-| **CORS** | 11.1.0 | Controle de acesso cross-origin |
+| Node.js | 18+ | Runtime |
+| TypeScript | 5.9 | Linguagem |
+| Fastify | 5.6 | Framework HTTP |
+| Drizzle ORM | 0.44 | Acesso ao PostgreSQL |
+| PostgreSQL | 18 | Banco de dados |
+| Zod | 4.1 | Validação de schemas |
+| bcrypt | 6.0 | Hash de senhas |
+| @fastify/jwt | 10.0 | Autenticação JWT |
+| @fastify/rate-limit | 10.3 | Limite de requisições |
+| @fastify/cors | 11.1 | CORS |
 
-### Ferramentas de Desenvolvimento
+### Ferramentas
 
-| Ferramenta | Versão | Uso |
-|------------|--------|-----|
-| **Drizzle Kit** | 0.31.7 | Migrações e gerenciamento do banco |
-| **TSX** | 4.21.0 | Execução de TypeScript |
-| **Biome** | 2.3.8 | Linter e formatador de código |
-| **Docker** | - | Containerização do PostgreSQL |
-| **Docker Compose** | - | Orquestração de containers |
-
----
-
-## ✨ Funcionalidades Implementadas
-
-### 🔐 Autenticação e Autorização
-
-- ✅ **Cadastro de Usuários**
-  - Validação de dados com Zod
-  - Hash de senhas (preparado para bcrypt)
-  - Verificação de email único
-  - Armazenamento seguro de dados pessoais
-
-- ✅ **Login e Logout**
-  - Autenticação via email e senha
-  - Geração de JWT tokens com expiração de 7 dias
-  - Armazenamento seguro do token no localStorage
-  - Verificação automática de token em requisições protegidas
-
-- ✅ **Rate Limiting (Proteção contra Força Bruta)**
-  - Limite de 5 tentativas de login por minuto por IP
-  - Cooldown visual de 3 segundos no botão após tentativa falha
-  - Mensagem amigável em português para o usuário
-  - Bloqueio automático temporário ao exceder o limite
-
-- ✅ **Proteção de Rotas**
-  - Middleware de autenticação JWT
-  - Redirecionamento automático para login quando não autenticado
-  - Guard de rotas no front-end (auth-guard.js)
-
-### 👤 Gerenciamento de Perfil
-
-- ✅ **Visualização de Perfil**
-  - Exibição de dados pessoais do usuário
-  - Histórico de agendamentos
-  - Informações de contato
-
-- ✅ **Edição de Perfil**
-  - Atualização de dados pessoais
-  - Validação de campos
-  - Persistência no banco de dados
-
-### 📅 Sistema de Agendamentos
-
-- ✅ **Visualização de Serviços**
-  - Listagem de serviços disponíveis
-  - Detalhes de cada serviço (preço, duração, descrição)
-  - Modal com informações completas
-
-- ✅ **Visualização de Barbeiros**
-  - Cards com informações dos barbeiros
-  - Especialidades e avaliações
-  - Seleção de barbeiro para agendamento
-
-- ✅ **Criação de Agendamentos**
-  - Seleção de data através de calendário interativo
-  - Seleção de horário disponível
-  - Escolha de serviço e barbeiro
-  - Campo de observações opcional
-  - Validação de disponibilidade
-
-- ✅ **Gerenciamento de Agendamentos**
-  - Listagem de agendamentos do usuário
-  - Cancelamento de agendamentos
-  - Atualização de status (pendente, confirmado, concluído, cancelado)
-
-- ✅ **Controle de Horários Bloqueados**
-  - Bloqueio automático ao criar agendamento
-  - Desbloqueio ao cancelar agendamento
-  - Consulta de horários disponíveis por barbeiro e data
-  - Prevenção de conflitos de horário
-
-### 🧮 Calculadora de Preços
-
-- ✅ **Cálculo Dinâmico**
-  - Seleção múltipla de serviços
-  - Cálculo automático de subtotal
-  - Aplicação de descontos para pacotes
-  - Exibição de total final
-
-### 🎨 Interface do Usuário
-
-- ✅ **Cookies de Visita**
-  - Contador automático de visitas (persistente por 365 dias)
-  - Exibição da data/hora da última visita do usuário
-  - Notificação de boas-vindas com número da visita e último acesso
-
-- ✅ **Design Responsivo**
-  - Layout adaptável para desktop, tablet e mobile
-  - Menu hambúrguer para dispositivos móveis
-  - Grid system flexível
-
-- ✅ **Tema Claro/Escuro**
-  - Alternância entre temas
-  - Persistência da preferência no localStorage
-  - Transições suaves
-
-- ✅ **Animações e Interatividade**
-  - Animações de scroll
-  - Modais e popups
-  - Feedback visual em ações do usuário
-  - Carrossel de imagens no hero
-
-- ✅ **Acessibilidade**
-  - Navegação por teclado
-  - Labels descritivos
-  - Contraste adequado
-  - Ícones com aria-labels
-
-### 📱 Funcionalidades Extras
-
-- ✅ **Saudação Dinâmica**
-  - Mensagem personalizada baseada no horário do dia
-  - Exibição do nome do usuário logado
-
-- ✅ **Integração WhatsApp**
-  - Botão flutuante para contato direto
-  - Link pré-formatado com mensagem
-
-- ✅ **Navegação Suave**
-  - Scroll suave entre seções
-  - Links âncora funcionais
-  - Menu de navegação fixo
+| Ferramenta | Uso |
+|------------|-----|
+| Drizzle Kit | Migrações e Drizzle Studio |
+| TSX | Execução de TypeScript |
+| Biome | Linter e formatador |
+| Docker / Docker Compose | Orquestração dos containers (banco, API e front-end) |
+| Nginx | Servidor estático do front-end |
 
 ---
 
-## 📁 Estrutura do Projeto
+## Estrutura do Projeto
 
 ```
 Trabalho-PWEB-II/
 │
-├── 📂 web/                      # Front-end (Interface Web)
-│   ├── 📂 index/                # Páginas HTML
-│   │   ├── home.html           # Página principal (serviços, barbeiros, agendamento)
-│   │   ├── login.html          # Página de login e cadastro
-│   │   └── profile.html        # Página de perfil do usuário
-│   │
-│   ├── 📂 script/              # Scripts JavaScript
-│   │   ├── api.js              # Cliente API (comunicação com back-end)
-│   │   ├── auth-guard.js       # Proteção de rotas no front-end
-│   │   ├── home.js             # Lógica da página home
-│   │   ├── login.js            # Lógica da página de login
-│   │   ├── profile.js          # Lógica da página de perfil
-│   │   └── theme.js            # Gerenciamento de tema claro/escuro
-│   │
-│   ├── 📂 style/               # Arquivos CSS
-│   │   ├── common.css          # Estilos comuns a todas as páginas
-│   │   ├── home.css            # Estilos específicos da home
-│   │   ├── login.css           # Estilos específicos do login
-│   │   └── profile.css         # Estilos específicos do perfil
-│   │
-│   └── 📂 img/                  # Imagens e assets
-│       ├── favicon-96x96.png
-│       └── pic1.jpg até pic5.jpg
+├── web/                          # Front-end
+│   ├── index/
+│   │   ├── home.html             # Página principal
+│   │   ├── login.html            # Login e cadastro
+│   │   └── profile.html          # Perfil do usuário
+│   ├── script/
+│   │   ├── api.js                # Cliente HTTP da API
+│   │   ├── auth-guard.js         # Proteção de rotas
+│   │   ├── home.js               # Lógica da home
+│   │   ├── login.js              # Lógica de autenticação
+│   │   ├── profile.js            # Lógica do perfil
+│   │   └── theme.js              # Tema claro/escuro
+│   ├── style/
+│   │   ├── common.css
+│   │   ├── home.css
+│   │   ├── login.css
+│   │   └── profile.css
+│   └── img/                      # Imagens e favicon
 │
-├── 📂 server/                   # Back-end (API)
-│   ├── 📂 src/
-│   │   ├── 📂 controllers/     # Camada de controle
-│   │   │   ├── autenticacao.controller.ts
-│   │   │   ├── usuarios.controller.ts
-│   │   │   ├── agendamentos.controller.ts
-│   │   │   └── horarios-bloqueados.controller.ts
-│   │   │
-│   │   ├── 📂 services/        # Camada de negócio
-│   │   │   ├── autenticacao.service.ts
-│   │   │   ├── usuarios.service.ts
-│   │   │   ├── agendamentos.service.ts
-│   │   │   └── horarios-bloqueados.service.ts
-│   │   │
-│   │   ├── 📂 routes/          # Camada de rotas
-│   │   │   ├── index.ts
-│   │   │   ├── autenticacao.routes.ts
-│   │   │   ├── usuarios.routes.ts
-│   │   │   ├── agendamentos.routes.ts
-│   │   │   └── horarios-bloqueados.routes.ts
-│   │   │
-│   │   ├── 📂 db/              # Camada de dados
-│   │   │   ├── 📂 schema/      # Schemas do banco
-│   │   │   │   ├── usuarios.ts
-│   │   │   │   ├── agendamentos.ts
-│   │   │   │   ├── horarios-bloqueados.ts
-│   │   │   │   └── index.ts
-│   │   │   │
-│   │   │   ├── 📂 migrations/  # Migrações do banco
-│   │   │   │   └── ...
-│   │   │   │
-│   │   │   ├── index.ts        # Configuração do Drizzle
-│   │   │   └── seed.ts         # Dados iniciais (opcional)
-│   │   │
-│   │   ├── 📂 env/             # Variáveis de ambiente
-│   │   │   └── index.ts
-│   │   │
-│   │   └── server.ts           # Arquivo principal do servidor
-│   │
-│   ├── drizzle.config.ts       # Configuração do Drizzle Kit
-│   ├── tsconfig.json           # Configuração do TypeScript
-│   ├── biome.json              # Configuração do Biome
-│   ├── package.json            # Dependências do projeto
-│   └── package-lock.json
+├── server/                       # Back-end
+│   ├── src/
+│   │   ├── controllers/          # Validação e orquestração HTTP
+│   │   ├── services/             # Regras de negócio
+│   │   ├── routes/               # Definição de rotas
+│   │   ├── db/
+│   │   │   ├── schema/           # Schemas Drizzle
+│   │   │   ├── migrations/       # Migrações SQL
+│   │   │   ├── index.ts          # Conexão com o banco
+│   │   │   └── seed.ts           # Seed (vazio por padrão)
+│   │   ├── env/                  # Validação de variáveis de ambiente
+│   │   └── server.ts             # Entrada da aplicação
+│   ├── drizzle.config.ts
+│   ├── package.json
+│   └── .env.example
 │
-├── docker-compose.yml          # Configuração do Docker para PostgreSQL
-└── README.md                   # Este arquivo
+├── docker-compose.yml            # Orquestração completa
+├── Dockerfile.api                # Imagem da API
+├── Dockerfile.web                # Imagem do front-end (Nginx)
+├── nginx.conf                    # Configuração do Nginx
+└── README.md
 ```
-
-### Organização por Camadas
-
-#### Front-end
-- **Apresentação**: HTML (estrutura)
-- **Estilo**: CSS (visual)
-- **Lógica**: JavaScript (comportamento)
-- **Comunicação**: API Client (fetch)
-
-#### Back-end
-- **Rotas**: Definição dos endpoints
-- **Controllers**: Validação de entrada e orquestração
-- **Services**: Lógica de negócio
-- **Database**: Acesso aos dados (ORM)
 
 ---
 
-## 🔄 Como Funciona
-
-### Fluxo de Requisição Completo
-
-1. **Cliente faz uma ação** (ex: clica em "Agendar")
-2. **Front-end captura o evento** e prepara os dados
-3. **API Client** (`api.js`) faz a requisição HTTP para o back-end
-4. **Servidor Fastify** recebe a requisição
-5. **Rota** direciona para o controller apropriado
-6. **Controller** valida os dados com Zod
-7. **Service** executa a lógica de negócio
-8. **Database** (via Drizzle ORM) executa queries no PostgreSQL
-9. **Resposta** retorna através das camadas
-10. **Front-end** atualiza a interface com os dados recebidos
-
-### Exemplo Prático: Criar Agendamento
-
-```mermaid
-sequenceDiagram
-    participant U as Usuário
-    participant H as home.html
-    participant JS as home.js
-    participant API as api.js
-    participant S as Server
-    participant C as Controller
-    participant SV as Service
-    participant DB as PostgreSQL
-    
-    U->>H: Preenche formulário de agendamento
-    U->>H: Clica em "Confirmar Agendamento"
-    H->>JS: Evento submit do formulário
-    JS->>JS: Valida dados no front-end
-    JS->>API: api.criarAgendamento(dados)
-    API->>API: Adiciona token JWT no header
-    API->>S: POST /api/agendamentos<br/>Body: {data, horario, serviço, barbeiro}
-    S->>C: AutenticacaoController.criar()
-    C->>C: Valida JWT token
-    C->>C: Valida dados com Zod
-    C->>SV: AgendamentosService.criar()
-    SV->>DB: Verifica se usuário existe
-    DB-->>SV: Usuário encontrado
-    SV->>DB: Verifica horários bloqueados
-    DB-->>SV: Horários disponíveis
-    SV->>SV: Valida disponibilidade
-    SV->>DB: INSERT INTO agendamentos
-    SV->>DB: INSERT INTO horarios_bloqueados
-    DB-->>SV: Agendamento criado
-    SV-->>C: Dados do agendamento
-    C-->>S: JSON response
-    S-->>API: Status 201 + dados
-    API-->>JS: Promise resolve
-    JS->>H: Exibe mensagem de sucesso
-    JS->>H: Atualiza lista de agendamentos
-    H->>U: Feedback visual de sucesso
-```
-
-### Sistema de Autenticação
-
-1. **Cadastro/Login**: Usuário fornece credenciais
-2. **Back-end valida**: Verifica email e senha no banco
-3. **Gera JWT**: Cria token com dados do usuário (id, email)
-4. **Retorna token**: Front-end recebe e armazena no localStorage
-5. **Próximas requisições**: Token é enviado no header `Authorization: Bearer {token}`
-6. **Validação**: Cada rota protegida verifica o token antes de processar
-
-### Sistema de Horários Bloqueados
-
-1. **Ao criar agendamento**: Sistema automaticamente bloqueia o horário do barbeiro
-2. **Ao consultar disponibilidade**: Front-end busca horários bloqueados antes de exibir opções
-3. **Ao cancelar**: Sistema desbloqueia o horário automaticamente
-4. **Prevenção de conflitos**: Não permite criar dois agendamentos no mesmo horário para o mesmo barbeiro
-
----
-
-## 🚀 Instalação e Execução
+## Instalação e Execução
 
 ### Pré-requisitos
 
-- Node.js 18+ instalado
-- Docker e Docker Compose instalados
-- Git (opcional, para clonar o repositório)
+- [Docker](https://www.docker.com/) e Docker Compose instalados
+- Git (opcional)
 
-### Passo a Passo
+### Executar com Docker Compose
 
-#### 1. Clonar/Obter o Projeto
+Sobe banco de dados, API e front-end de uma vez:
 
 ```bash
-# Se estiver usando Git
 git clone <url-do-repositorio>
 cd Trabalho-PWEB-II
+docker compose up --build
 ```
 
-#### 2. Configurar o Banco de Dados
+| Serviço | URL |
+|---------|-----|
+| Front-end | http://localhost:8080 |
+| API | http://localhost:3003 |
+| Health check | http://localhost:3003/ping |
+
+O container da API executa as migrações automaticamente na inicialização.
+
+Para encerrar:
 
 ```bash
-# Iniciar o PostgreSQL via Docker
-docker-compose up -d
-
-# Verificar se o container está rodando
-docker ps
+docker compose down
 ```
 
-O PostgreSQL estará disponível em:
-- **Host**: `localhost`
-- **Porta**: `5432`
-- **Usuário**: `postgres`
-- **Senha**: `postgres`
-- **Database**: `barbearia_db`
+### Verificação rápida
 
-#### 3. Configurar o Back-end
-
-```bash
-# Entrar na pasta do servidor
-cd server
-
-# Instalar dependências
-npm install
-
-# Criar arquivo .env na pasta server/
-# Conteúdo do .env:
-DATABASE_URL=postgresql://postgres:postgres@localhost:5432/barbearia_db
-```
-
-#### 4. Executar Migrações do Banco
-
-```bash
-# Gerar migrações (se necessário)
-npm run db:generate
-
-# Executar migrações
-npm run db:migrate
-
-# (Opcional) Popular banco com dados iniciais
-npm run db:seed
-```
-
-#### 5. Iniciar o Servidor Back-end
-
-```bash
-# Desenvolvimento (com hot-reload)
-npm run dev
-
-# O servidor estará rodando em http://localhost:3003
-```
-
-#### 6. Servir o Front-end
-
-Você pode usar qualquer servidor HTTP estático. Algumas opções:
-
-**Opção 1: Usando Python (recomendado para desenvolvimento)**
-```bash
-# Na raiz do projeto
-python -m http.server 8000
-# Acesse: http://localhost:8000/web/index/home.html
-```
-
-**Opção 2: Usando Node.js (http-server)**
-```bash
-# Instalar globalmente
-npm install -g http-server
-
-# Na raiz do projeto
-http-server -p 8000
-# Acesse: http://localhost:8000/web/index/home.html
-```
-
-**Opção 3: Usando VS Code Live Server**
-- Instale a extensão "Live Server"
-- Clique com botão direito em `web/index/home.html`
-- Selecione "Open with Live Server"
-
-### Verificação
-
-1. ✅ Back-end rodando: Acesse `http://localhost:3003/ping` (deve retornar `{"message":"pong"}`)
-2. ✅ Front-end rodando: Acesse `http://localhost:8000/web/index/login.html`
-3. ✅ Banco de dados: Verifique com `docker ps` se o container está ativo
+1. `GET http://localhost:3003/ping` → `{"message":"pong"}`
+2. Front-end disponível em http://localhost:8080
+3. `docker ps` mostra os containers `bd`, `api` e `web` ativos
 
 ---
 
-## 📡 API Endpoints
+## API REST
 
-### Autenticação
+Base URL: `http://localhost:3003`
 
-| Método | Endpoint | Descrição | Autenticação |
-|--------|----------|-----------|--------------|
-| `POST` | `/auth/cadastro` | Cadastra novo usuário | ❌ |
-| `POST` | `/auth/login` | Realiza login (rate limit: 5/min) | ❌ |
-| `GET` | `/auth/verificar-token` | Verifica se token é válido | ✅ |
+### Autenticação (`/auth`)
 
-### Usuários
+| Método | Endpoint | Auth | Descrição |
+|--------|----------|------|-----------|
+| `POST` | `/auth/cadastro` | Não | Cadastra novo usuário |
+| `POST` | `/auth/login` | Não | Login (rate limit: 5/min) |
+| `GET` | `/auth/verificar-token` | Sim | Valida o JWT |
 
-| Método | Endpoint | Descrição | Autenticação |
-|--------|----------|-----------|--------------|
-| `GET` | `/api/usuarios/perfil` | Busca perfil do usuário logado | ✅ |
-| `PUT` | `/api/usuarios/perfil` | Atualiza perfil do usuário | ✅ |
+### Usuários (`/api/usuarios`)
 
-### Agendamentos
+| Método | Endpoint | Auth | Descrição |
+|--------|----------|------|-----------|
+| `GET` | `/api/usuarios/perfil` | Sim | Retorna perfil do usuário logado |
+| `PUT` | `/api/usuarios/perfil` | Sim | Atualiza perfil |
+| `DELETE` | `/api/usuarios/perfil` | Sim | Exclui conta |
 
-| Método | Endpoint | Descrição | Autenticação |
-|--------|----------|-----------|--------------|
-| `GET` | `/api/agendamentos/meus-agendamentos` | Lista agendamentos do usuário | ✅ |
-| `POST` | `/api/agendamentos` | Cria novo agendamento | ✅ |
-| `GET` | `/api/agendamentos/:id` | Busca agendamento por ID | ✅ |
-| `PUT` | `/api/agendamentos/:id` | Atualiza agendamento | ✅ |
-| `PATCH` | `/api/agendamentos/:id/cancelar` | Cancela agendamento | ✅ |
+### Agendamentos (`/api/agendamentos`)
 
-### Horários Bloqueados
+| Método | Endpoint | Auth | Descrição |
+|--------|----------|------|-----------|
+| `GET` | `/api/agendamentos` | Sim | Lista todos os agendamentos |
+| `GET` | `/api/agendamentos/meus-agendamentos` | Sim | Lista agendamentos do usuário logado |
+| `GET` | `/api/agendamentos/:id` | Sim | Busca agendamento por ID |
+| `POST` | `/api/agendamentos` | Sim | Cria agendamento |
+| `PUT` | `/api/agendamentos/:id` | Sim | Atualiza agendamento |
+| `PATCH` | `/api/agendamentos/:id/cancelar` | Sim | Cancela agendamento |
+| `DELETE` | `/api/agendamentos/:id` | Sim | Remove agendamento |
 
-| Método | Endpoint | Descrição | Autenticação |
-|--------|----------|-----------|--------------|
-| `GET` | `/api/horarios-bloqueados` | Lista todos os horários bloqueados | ❌ |
-| `GET` | `/api/horarios-bloqueados/data/:data` | Lista por data | ❌ |
-| `GET` | `/api/horarios-bloqueados/buscar?nomeBarbeiro=X&data=Y` | Busca por barbeiro e data | ❌ |
+### Horários bloqueados (`/api/horarios-bloqueados`)
 
-### Exemplos de Requisições
+| Método | Endpoint | Auth | Descrição |
+|--------|----------|------|-----------|
+| `GET` | `/api/horarios-bloqueados` | Não | Lista todos |
+| `GET` | `/api/horarios-bloqueados/data/:data` | Não | Lista por data (`YYYY-MM-DD`) |
+| `GET` | `/api/horarios-bloqueados/buscar?nomeBarbeiro=X&data=Y` | Não | Lista por barbeiro e data |
+| `GET` | `/api/horarios-bloqueados/:id` | Não | Busca por ID |
+| `POST` | `/api/horarios-bloqueados` | Não | Cria bloqueio manual |
+| `DELETE` | `/api/horarios-bloqueados/:id` | Não | Remove bloqueio |
 
-#### Login
+### Exemplos
+
+**Login**
+
 ```http
 POST /auth/login
 Content-Type: application/json
@@ -692,16 +418,17 @@ Content-Type: application/json
 }
 ```
 
-#### Criar Agendamento
+**Criar agendamento**
+
 ```http
 POST /api/agendamentos
-Authorization: Bearer {token}
+Authorization: Bearer <token>
 Content-Type: application/json
 
 {
   "nomeBarbeiro": "Luciano Sousa Barbosa",
   "nomeServico": "Corte Masculino",
-  "data": "2025-01-15",
+  "data": "2026-06-15",
   "horario": "14:30",
   "observacoes": "Corte na máquina 2"
 }
@@ -709,125 +436,81 @@ Content-Type: application/json
 
 ---
 
-## 🗄️ Banco de Dados
+## Banco de Dados
 
-### Tabelas
-
-#### `usuarios`
-Armazena informações dos clientes cadastrados.
+### Tabela `usuarios`
 
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
-| `id` | UUID | Identificador único (PK) |
-| `nome_completo` | TEXT | Nome completo do usuário |
-| `email` | TEXT | Email (único) |
-| `telefone` | TEXT | Telefone de contato |
-| `senha` | TEXT | Senha (hash) |
+| `id` | UUID | Chave primária |
+| `nome_completo` | TEXT | Nome completo |
+| `email` | TEXT | E-mail único |
+| `telefone` | TEXT | Telefone |
+| `senha` | TEXT | Hash bcrypt |
 | `data_nascimento` | DATE | Data de nascimento |
-| `observacoes` | TEXT | Observações adicionais (opcional) |
+| `observacoes` | TEXT | Observações (opcional) |
 | `criado_em` | TIMESTAMP | Data de criação |
-| `atualizado_em` | TIMESTAMP | Data da última atualização |
+| `atualizado_em` | TIMESTAMP | Última atualização |
 
-#### `agendamentos`
-Armazena os agendamentos realizados pelos clientes.
+### Tabela `agendamentos`
 
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
-| `id` | UUID | Identificador único (PK) |
-| `usuario_id` | UUID | Referência ao usuário (FK) |
+| `id` | UUID | Chave primária |
+| `usuario_id` | UUID | FK → `usuarios.id` |
 | `nome_barbeiro` | TEXT | Nome do barbeiro |
 | `nome_servico` | TEXT | Nome do serviço |
 | `data` | DATE | Data do agendamento |
-| `horario` | TIME | Horário do agendamento |
-| `status` | TEXT | Status (pendente, confirmado, concluido, cancelado, futuro) |
-| `observacoes` | TEXT | Observações do cliente |
+| `horario` | TIME | Horário |
+| `status` | TEXT | Status do agendamento |
+| `observacoes` | TEXT | Observações (opcional) |
 | `criado_em` | TIMESTAMP | Data de criação |
-| `atualizado_em` | TIMESTAMP | Data da última atualização |
+| `atualizado_em` | TIMESTAMP | Última atualização |
 
-#### `horarios_bloqueados`
-Controla os horários indisponíveis dos barbeiros.
+### Tabela `horarios_bloqueados`
 
 | Campo | Tipo | Descrição |
 |-------|------|-----------|
-| `id` | UUID | Identificador único (PK) |
+| `id` | UUID | Chave primária |
 | `nome_barbeiro` | TEXT | Nome do barbeiro |
-| `data` | DATE | Data do horário bloqueado |
+| `data` | DATE | Data bloqueada |
 | `horario` | TIME | Horário bloqueado |
-| `motivo` | TEXT | Motivo do bloqueio (ex: "Agendamento") |
+| `motivo` | TEXT | Motivo (ex.: "Agendamento") |
 | `criado_em` | TIMESTAMP | Data de criação |
-| `atualizado_em` | TIMESTAMP | Data da última atualização |
+| `atualizado_em` | TIMESTAMP | Última atualização |
 
 ### Relacionamentos
 
-- **usuarios** → **agendamentos**: Um usuário pode ter vários agendamentos (1:N)
-- **agendamentos** → **horarios_bloqueados**: Cada agendamento cria um horário bloqueado (1:1)
+- Um **usuário** pode ter vários **agendamentos** (1:N)
+- Cada **agendamento** gera um registro em **horarios_bloqueados** (relação lógica 1:1)
 
 ---
 
-## 🎓 Fases do Projeto
-
-### ✅ Fase 1 – Desenvolvimento da Interface Gráfica
-- Estruturação HTML completa
-- Estilização CSS responsiva
-- Layout funcional e visualmente agradável
-
-### ✅ Fase 2 – Interatividade e Conteúdo Dinâmico
-- Manipulação do DOM com JavaScript
-- Eventos e validações
-- Conteúdo dinâmico
-
-### ✅ Fase 3 – Cookies, Armazenamento Local e Padrões
-- Implementação de localStorage
-- Integração com API via Fetch
-- Organização profissional do código
-- Separação de responsabilidades
-
----
-
-## 📝 Notas Técnicas
+## Notas Técnicas
 
 ### Segurança
 
-- ✅ Senhas devem ser hasheadas (preparado para bcrypt)
-- ✅ JWT tokens com expiração de 7 dias
-- ✅ Validação de dados no back-end com Zod
-- ✅ CORS configurado para permitir requisições do front-end
-- ✅ Rate limiting no login (5 tentativas/minuto por IP) com cooldown visual
-- ✅ Tokens armazenados no localStorage (considerar httpOnly cookies em produção)
+- Senhas armazenadas com **bcrypt** (salt rounds: 10)
+- JWT com expiração de 7 dias
+- Validação de entrada no back-end com Zod
+- CORS habilitado para requisições do front-end
+- Rate limiting global (100 req/min) e específico no login (5 req/min)
+- Em produção, substituir o segredo JWT hardcoded em `server.ts` por variável de ambiente e considerar cookies `httpOnly` em vez de `localStorage`
 
-### Performance
+### Páginas e autenticação
 
-- ✅ Fastify como servidor (alta performance)
-- ✅ Queries otimizadas com Drizzle ORM
-- ✅ Índices no banco de dados (via Drizzle)
-- ✅ Lazy loading de imagens (preparado)
-
-### Boas Práticas
-
-- ✅ Separação de responsabilidades (MVC)
-- ✅ Código TypeScript com tipagem forte
-- ✅ Validação de schemas com Zod
-- ✅ Tratamento de erros consistente
-- ✅ Código organizado e documentado
+| Página | Acesso |
+|--------|--------|
+| `home.html` | Público |
+| `login.html` | Público |
+| `profile.html` | Protegido (requer login) |
 
 ---
 
-## 🤝 Contribuição
+## Licença e Autores
 
-Este é um projeto acadêmico desenvolvido para a disciplina de Programação Web II. Para contribuições ou sugestões, entre em contato com a equipe de desenvolvimento.
-
----
-
-## 📄 Licença
-
-Este projeto é de uso acadêmico e educacional.
+Projeto de uso **acadêmico e educacional**, desenvolvido para a disciplina de Programação Web II.
 
 ---
 
-## 👥 Autores
-
-Desenvolvido como trabalho acadêmico para a disciplina de Programação Web II.
-
----
-
-**Desenvolvido com ❤️ para a Barbearia Style**
+**Barbearia Style** — Seu estilo, nossa paixão.
