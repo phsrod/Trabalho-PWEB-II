@@ -1,0 +1,34 @@
+FROM node:18-alpine
+
+RUN apk add --no-cache netcat-openbsd
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+EXPOSE 3003
+
+COPY <<"EOF" /usr/local/bin/entrypoint.sh
+#!/bin/sh
+set -e
+
+echo "Aguardando banco de dados..."
+while ! nc -z bd 5432; do
+  sleep 1
+done
+echo "Banco de dados pronto!"
+
+echo "Executando migrações..."
+npx drizzle-kit migrate
+echo "Migrações concluídas!"
+
+echo "Iniciando servidor..."
+exec npx tsx src/server.ts
+EOF
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
+ENTRYPOINT ["entrypoint.sh"]
