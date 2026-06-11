@@ -1,4 +1,4 @@
-import { pgTable, text, timestamp, uuid, date, time } from 'drizzle-orm/pg-core'
+import { date, pgTable, text, time, timestamp, uuid } from 'drizzle-orm/pg-core'
 import { usuarios } from './usuarios.ts'
 
 export const agendamentos = pgTable('agendamentos', {

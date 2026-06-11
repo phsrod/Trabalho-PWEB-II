@@ -1,8 +1,8 @@
+import bcrypt from 'bcrypt'
 import { eq } from 'drizzle-orm'
+import type { FastifyInstance } from 'fastify'
 import { db } from '../db/index.ts'
 import { usuarios } from '../db/schema/index.ts'
-import type { FastifyInstance } from 'fastify'
-import bcrypt from 'bcrypt'
 
 interface CadastroInput {
   nomeCompleto: string

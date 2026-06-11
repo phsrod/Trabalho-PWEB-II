@@ -13,6 +13,7 @@ Sistema web full-stack para gerenciamento de agendamentos de uma barbearia, dese
 - [Tecnologias](#tecnologias)
 - [Estrutura do Projeto](#estrutura-do-projeto)
 - [Instalação e Execução](#instalação-e-execução)
+- [CI/CD](#cicd)
 - [API REST](#api-rest)
 - [Banco de Dados](#banco-de-dados)
 - [Fases do Trabalho Acadêmico](#fases-do-trabalho-acadêmico)
@@ -313,6 +314,7 @@ Trabalho-PWEB-II/
 │   ├── package.json
 │   └── .env.example
 │
+├── .github/workflows/ci-cd.yml   # Pipeline CI/CD (GitHub Actions)
 ├── docker-compose.yml            # Orquestração completa
 ├── Dockerfile.api                # Imagem da API
 ├── Dockerfile.web                # Imagem do front-end (Nginx)
@@ -358,6 +360,52 @@ docker compose down
 1. `GET http://localhost:3003/ping` → `{"message":"pong"}`
 2. Front-end disponível em http://localhost:8080
 3. `docker ps` mostra os containers `bd`, `api` e `web` ativos
+
+---
+
+## CI/CD
+
+O projeto usa **GitHub Actions** para integração e entrega contínua. O workflow está em `.github/workflows/ci-cd.yml`.
+
+### CI (Integração Contínua)
+
+Roda em **todo push** e em **pull requests** para a branch `main`:
+
+| Etapa | O que valida |
+|-------|----------------|
+| Lint | Código do back-end com Biome |
+| Typecheck | Compilação TypeScript sem erros |
+| Smoke test | `docker compose build`, sobe os 3 containers, testa `/ping` e o front-end |
+
+### CD (Entrega Contínua)
+
+Roda **somente após o CI passar** em push na branch `main`:
+
+1. Constrói as imagens Docker da API e do front-end
+2. Publica no **GitHub Container Registry** (`ghcr.io`)
+3. Gera um resumo do deploy na aba Actions
+
+Imagens publicadas:
+
+- `ghcr.io/<usuario>/<repositorio>/barbearia-api:latest`
+- `ghcr.io/<usuario>/<repositorio>/barbearia-web:latest`
+
+### Como provar na apresentação
+
+1. Faça um `git push` na branch `main`
+2. No GitHub, abra a aba **Actions** do repositório
+3. Mostre o workflow **CI/CD** com os jobs:
+   - **CI — Validar código e containers** (verde)
+   - **CD — Publicar imagens Docker** (verde, só na `main`)
+4. Clique no job de CD e mostre o **Summary** com as imagens publicadas
+5. Na página do repositório, abra **Packages** e mostre as imagens `barbearia-api` e `barbearia-web`
+
+```mermaid
+graph LR
+    A[git push na main] --> B[CI: lint + typecheck + Docker]
+    B -->|passou| C[CD: build e push das imagens]
+    C --> D[GitHub Packages]
+```
 
 ---
 

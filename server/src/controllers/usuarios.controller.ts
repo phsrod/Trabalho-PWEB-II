@@ -50,7 +50,7 @@ export class UsuariosController {
       if (error instanceof z.ZodError) {
         return reply.status(400).send({
           mensagem: 'Dados inválidos',
-          erros: error.issues.map((e) => ({
+          erros: error.issues.map(e => ({
             campo: e.path.join('.'),
             mensagem: e.message,
           })),

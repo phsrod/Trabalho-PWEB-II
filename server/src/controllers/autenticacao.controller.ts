@@ -33,7 +33,7 @@ export class AutenticacaoController {
       if (error instanceof z.ZodError) {
         return reply.status(400).send({
           mensagem: 'Dados inválidos',
-          erros: error.issues.map((e) => ({
+          erros: error.issues.map(e => ({
             campo: e.path.join('.'),
             mensagem: e.message,
           })),
@@ -59,7 +59,7 @@ export class AutenticacaoController {
       if (error instanceof z.ZodError) {
         return reply.status(400).send({
           mensagem: 'Dados inválidos',
-          erros: error.issues.map((e) => ({
+          erros: error.issues.map(e => ({
             campo: e.path.join('.'),
             mensagem: e.message,
           })),
@@ -79,7 +79,9 @@ export class AutenticacaoController {
       await request.jwtVerify()
       return reply.status(200).send({ valido: true, usuario: request.user })
     } catch (error) {
-      return reply.status(401).send({ valido: false, mensagem: 'Token inválido' })
+      return reply
+        .status(401)
+        .send({ valido: false, mensagem: 'Token inválido' })
     }
   }
 }

@@ -5,7 +5,9 @@ import { AgendamentosService } from '../services/agendamentos.service.ts'
 const criarAgendamentoSchema = z.object({
   nomeBarbeiro: z.string().min(1, 'Nome do barbeiro é obrigatório'),
   nomeServico: z.string().min(1, 'Nome do serviço é obrigatório'),
-  data: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Data inválida (use YYYY-MM-DD)'),
+  data: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, 'Data inválida (use YYYY-MM-DD)'),
   horario: z.string().regex(/^\d{2}:\d{2}$/, 'Horário inválido (use HH:MM)'),
   observacoes: z.string().optional(),
 })
@@ -13,8 +15,14 @@ const criarAgendamentoSchema = z.object({
 const atualizarAgendamentoSchema = z.object({
   nomeBarbeiro: z.string().min(1).optional(),
   nomeServico: z.string().min(1).optional(),
-  data: z.string().regex(/^\d{4}-\d{2}-\d{2}$/).optional(),
-  horario: z.string().regex(/^\d{2}:\d{2}$/).optional(),
+  data: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/)
+    .optional(),
+  horario: z
+    .string()
+    .regex(/^\d{2}:\d{2}$/)
+    .optional(),
   observacoes: z.string().optional(),
   status: z
     .enum(['pendente', 'confirmado', 'concluido', 'cancelado', 'futuro'])
@@ -89,7 +97,7 @@ export class AgendamentosController {
       if (error instanceof z.ZodError) {
         return reply.status(400).send({
           mensagem: 'Dados inválidos',
-          erros: error.issues.map((e) => ({
+          erros: error.issues.map(e => ({
             campo: e.path.join('.'),
             mensagem: e.message,
           })),
@@ -121,7 +129,7 @@ export class AgendamentosController {
       if (error instanceof z.ZodError) {
         return reply.status(400).send({
           mensagem: 'Dados inválidos',
-          erros: error.issues.map((e) => ({
+          erros: error.issues.map(e => ({
             campo: e.path.join('.'),
             mensagem: e.message,
           })),
@@ -142,8 +150,7 @@ export class AgendamentosController {
 
       const { id } = request.params as { id: string }
 
-      const agendamentoCancelado =
-        await this.agendamentosService.cancelar(id)
+      const agendamentoCancelado = await this.agendamentosService.cancelar(id)
 
       return reply.status(200).send(agendamentoCancelado)
     } catch (error) {
@@ -172,5 +179,4 @@ export class AgendamentosController {
       return reply.status(500).send({ mensagem: 'Erro interno do servidor' })
     }
   }
-
 }

@@ -1,8 +1,8 @@
 import type { FastifyInstance } from 'fastify'
-import { autenticacaoRoutes } from './autenticacao.routes.ts'
-import { usuariosRoutes } from './usuarios.routes.ts'
 import { agendamentosRoutes } from './agendamentos.routes.ts'
+import { autenticacaoRoutes } from './autenticacao.routes.ts'
 import { horariosBloqueadosRoutes } from './horarios-bloqueados.routes.ts'
+import { usuariosRoutes } from './usuarios.routes.ts'
 
 export async function registrarRotas(app: FastifyInstance) {
   app.register(autenticacaoRoutes, { prefix: '/auth' })

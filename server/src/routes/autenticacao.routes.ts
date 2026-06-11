@@ -8,16 +8,20 @@ export async function autenticacaoRoutes(app: FastifyInstance) {
     return autenticacaoController.cadastrar(request, reply)
   })
 
-  app.post('/login', {
-    config: {
-      rateLimit: {
-        max: 5,
-        timeWindow: '1 minute',
+  app.post(
+    '/login',
+    {
+      config: {
+        rateLimit: {
+          max: 5,
+          timeWindow: '1 minute',
+        },
       },
     },
-  }, async (request, reply) => {
-    return autenticacaoController.login(request, reply)
-  })
+    async (request, reply) => {
+      return autenticacaoController.login(request, reply)
+    },
+  )
 
   app.get('/verificar-token', async (request, reply) => {
     return autenticacaoController.verificarToken(request, reply)

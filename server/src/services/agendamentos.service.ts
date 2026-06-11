@@ -141,10 +141,9 @@ export class AgendamentosService {
       await this.horariosBloqueadosService.deletarPorBarbeiroDataHorario(
         agendamento.nomeBarbeiro,
         agendamento.data,
-        agendamento.horario
+        agendamento.horario,
       )
-    } catch (error) {
-    }
+    } catch (error) {}
 
     return agendamentoCancelado
   }

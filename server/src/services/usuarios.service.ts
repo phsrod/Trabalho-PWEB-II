@@ -1,7 +1,7 @@
+import bcrypt from 'bcrypt'
 import { eq } from 'drizzle-orm'
 import { db } from '../db/index.ts'
 import { usuarios } from '../db/schema/index.ts'
-import bcrypt from 'bcrypt'
 
 interface AtualizarUsuarioInput {
   nomeCompleto?: string

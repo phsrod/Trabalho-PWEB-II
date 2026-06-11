@@ -51,8 +51,8 @@ export class HorariosBloqueadosService {
       .where(
         and(
           eq(horariosBloqueados.nomeBarbeiro, nomeBarbeiro),
-          eq(horariosBloqueados.data, data)
-        )
+          eq(horariosBloqueados.data, data),
+        ),
       )
       .orderBy(horariosBloqueados.horario)
   }
@@ -79,8 +79,8 @@ export class HorariosBloqueadosService {
         and(
           eq(horariosBloqueados.nomeBarbeiro, dados.nomeBarbeiro),
           eq(horariosBloqueados.data, dados.data),
-          eq(horariosBloqueados.horario, dados.horario)
-        )
+          eq(horariosBloqueados.horario, dados.horario),
+        ),
       )
       .limit(1)
 
@@ -104,7 +104,7 @@ export class HorariosBloqueadosService {
   async deletarPorBarbeiroDataHorario(
     nomeBarbeiro: string,
     data: string,
-    horario: string
+    horario: string,
   ) {
     const [horarioBloqueado] = await db
       .select()
@@ -113,8 +113,8 @@ export class HorariosBloqueadosService {
         and(
           eq(horariosBloqueados.nomeBarbeiro, nomeBarbeiro),
           eq(horariosBloqueados.data, data),
-          eq(horariosBloqueados.horario, horario)
-        )
+          eq(horariosBloqueados.horario, horario),
+        ),
       )
       .limit(1)
 
