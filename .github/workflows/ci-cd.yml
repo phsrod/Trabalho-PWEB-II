@@ -15,6 +15,21 @@ jobs:
     name: CI — Validar código e containers
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:18
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: barbearia_db
+        ports:
+          - 5433:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -41,6 +56,18 @@ jobs:
       - name: Testes unitários
         working-directory: server
         run: npm run test:unit
+
+      - name: Rodar migrations
+        working-directory: server
+        run: npx drizzle-kit migrate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5433/barbearia_db
+
+      - name: Testes de integração
+        working-directory: server
+        run: npm run test:integration
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5433/barbearia_db
 
       - name: Build e smoke test Docker
         run: |
