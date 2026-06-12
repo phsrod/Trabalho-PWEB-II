@@ -1,17 +1,21 @@
 import type { FastifyInstance } from 'fastify'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { buildApp } from '../../src/app.ts'
 import { limparBanco } from './helpers/setup.ts'
 
 let app: FastifyInstance
 
-beforeEach(async () => {
+beforeAll(async () => {
   app = await buildApp()
   await limparBanco()
 })
 
-afterEach(async () => {
+afterAll(async () => {
   await app.close()
+})
+
+beforeEach(async () => {
+  await limparBanco()
 })
 
 describe('POST /auth/cadastro', () => {
@@ -86,7 +90,7 @@ describe('POST /auth/cadastro', () => {
 
 describe('POST /auth/login', () => {
   beforeEach(async () => {
-    await app.inject({
+    const res = await app.inject({
       method: 'POST',
       url: '/auth/cadastro',
       payload: {
@@ -97,6 +101,7 @@ describe('POST /auth/login', () => {
         dataNascimento: '1995-05-10',
       },
     })
+    expect(res.statusCode).toBe(201)
   })
 
   it('deve logar com credenciais válidas', async () => {

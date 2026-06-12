@@ -1,13 +1,20 @@
 import type { FastifyInstance } from 'fastify'
-import { afterEach, beforeEach, describe, expect, it } from 'vitest'
+import { afterAll, beforeAll, beforeEach, describe, expect, it } from 'vitest'
 import { buildApp } from '../../src/app.ts'
 import { limparBanco } from './helpers/setup.ts'
 
 let app: FastifyInstance
 let token: string
 
-beforeEach(async () => {
+beforeAll(async () => {
   app = await buildApp()
+})
+
+afterAll(async () => {
+  await app.close()
+})
+
+beforeEach(async () => {
   await limparBanco()
 
   const response = await app.inject({
@@ -22,12 +29,9 @@ beforeEach(async () => {
     },
   })
 
+  expect(response.statusCode).toBe(201)
   const body = response.json()
   token = body.token
-})
-
-afterEach(async () => {
-  await app.close()
 })
 
 describe('GET /api/usuarios/perfil', () => {
