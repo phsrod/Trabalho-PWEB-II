@@ -2,6 +2,7 @@ const COOKIE_CONSENT_KEY = 'cookieConsentAccepted';
 const BOOKING_DRAFT_KEY = 'bookingDraft';
 const LAST_VISIT_KEY = 'lastVisit';
 const VISIT_COUNT_KEY = 'visitCount';
+const SHOW_LAST_VISIT_KEY = 'showLastVisitAfterLogin';
 
 document.addEventListener('DOMContentLoaded', function() {
     initApp();
@@ -1143,7 +1144,10 @@ function initVisitCookies() {
     const agora = new Date();
     setCookie(LAST_VISIT_KEY, agora.toISOString(), 365);
 
-    if (lastVisit) {
+    const shouldShowLastVisit = sessionStorage.getItem(SHOW_LAST_VISIT_KEY) === 'true';
+    sessionStorage.removeItem(SHOW_LAST_VISIT_KEY);
+
+    if (shouldShowLastVisit && lastVisit) {
         const ultimaData = new Date(lastVisit);
         const dataFormatada = ultimaData.toLocaleDateString('pt-BR', {
             day: '2-digit',

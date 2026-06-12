@@ -98,6 +98,7 @@ function initLoginForm() {
                 }
 
                 showNotification('Login realizado com sucesso!', 'success');
+                sessionStorage.setItem('showLastVisitAfterLogin', 'true');
 
                 setTimeout(() => {
                     window.location.href = '/web/index/home.html';
@@ -245,6 +246,7 @@ function initCadastroForm() {
                 localStorage.setItem('usuario', JSON.stringify(data.usuario));
 
                 showNotification('Cadastro realizado com sucesso!', 'success');
+                sessionStorage.setItem('showLastVisitAfterLogin', 'true');
 
                 setTimeout(() => {
                     window.location.href = '/web/index/home.html';
