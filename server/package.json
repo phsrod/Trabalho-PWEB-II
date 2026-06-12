@@ -6,6 +6,10 @@
 	"scripts": {
 		"lint": "biome check src/",
 		"typecheck": "tsc --noEmit",
+		"test": "vitest run",
+		"test:unit": "vitest run tests/unit",
+		"test:integration": "vitest run tests/integration",
+		"test:watch": "vitest",
 		"dev": "tsx watch --env-file=.env ./src/server.ts",
 		"db:generate": "drizzle-kit generate",
 		"db:migrate": "drizzle-kit migrate",
@@ -20,7 +24,8 @@
 		"@types/node": "^24.10.1",
 		"drizzle-kit": "^0.31.7",
 		"tsx": "^4.21.0",
-		"typescript": "^5.9.3"
+		"typescript": "^5.9.3",
+		"vitest": "^4.1.8"
 	},
 	"dependencies": {
 		"@fastify/cors": "^11.1.0",
