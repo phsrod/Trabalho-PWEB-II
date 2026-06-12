@@ -24,7 +24,6 @@ beforeEach(async () => {
 
   const body = response.json()
   token = body.token
-  usuario = body.usuario
 })
 
 afterEach(async () => {

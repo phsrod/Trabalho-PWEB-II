@@ -94,6 +94,10 @@ export class AgendamentosController {
 
       return reply.status(201).send(novoAgendamento)
     } catch (error) {
+      if ((error as any).statusCode === 401) {
+        return reply.status(401).send({ mensagem: 'Não autorizado' })
+      }
+
       if (error instanceof z.ZodError) {
         return reply.status(400).send({
           mensagem: 'Dados inválidos',

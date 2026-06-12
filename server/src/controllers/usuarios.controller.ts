@@ -25,6 +25,10 @@ export class UsuariosController {
 
       return reply.status(200).send(usuario)
     } catch (error) {
+      if ((error as any).statusCode === 401) {
+        return reply.status(401).send({ mensagem: 'Não autorizado' })
+      }
+
       if (error instanceof Error) {
         return reply.status(404).send({ mensagem: error.message })
       }
@@ -47,6 +51,10 @@ export class UsuariosController {
 
       return reply.status(200).send(usuarioAtualizado)
     } catch (error) {
+      if ((error as any).statusCode === 401) {
+        return reply.status(401).send({ mensagem: 'Não autorizado' })
+      }
+
       if (error instanceof z.ZodError) {
         return reply.status(400).send({
           mensagem: 'Dados inválidos',
