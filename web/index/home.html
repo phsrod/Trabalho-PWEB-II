@@ -2,575 +2,575 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barbearia Style - Agendamento Online</title>
-    <link rel="icon" href="/web/img/favicon-96x96.png" type="image/x-icon">
-    <link rel="stylesheet" href="/web/style/common.css">
-    <link rel="stylesheet" href="/web/style/home.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barbearia Style - Agendamento Online</title>
+  <link rel="icon" href="/web/img/favicon-96x96.png" type="image/x-icon">
+  <link rel="stylesheet" href="/web/style/common.css">
+  <link rel="stylesheet" href="/web/style/home.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <header class="header">
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="logo">
-                    <div class="greeting">
-                        <div class="user-dropdown">
-                            <button class="user-btn">
-                                <i class="fas fa-user"></i>
-                            </button>
-                            <div class="dropdown-menu">
-                                <a href="/web/index/profile.html">Perfil</a>
-                                <a href="/web/index/login.html">Sair</a>
-                            </div>
-                        </div>
-                        <span class="greeting-text" id="greeting">Bom dia,</span>
-                        <span class="user-name" id="userName">Matheus M.</span>
-                    </div>
-                    <div class="logo-content">
-                        <i class="fas fa-cut"></i>
-                        <span>Barbearia Style</span>
-                    </div>
-                </div>
-                <ul class="nav-menu">
-                    <li><a href="#home" class="nav-link">Início</a></li>
-                    <li><a href="#services" class="nav-link">Serviços</a></li>
-                    <li><a href="#barbers" class="nav-link">Barbeiros</a></li>
-                    <li><a href="#calculator" class="nav-link">Calculadora</a></li>
-                    <li><a href="#booking" class="nav-link">Agendar</a></li>
-                </ul>
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <div class="hamburger">
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                    </div>
-                </div>
+  <header class="header">
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <div class="greeting">
+            <div class="user-dropdown">
+              <button class="user-btn">
+                <i class="fas fa-user"></i>
+              </button>
+              <div class="dropdown-menu">
+                <a href="/web/index/profile.html">Perfil</a>
+                <a href="/web/index/login.html">Sair</a>
+              </div>
             </div>
-        </nav>
-    </header>
-
-    <section id="home" class="hero">
-        <div class="hero-bg hero-bg1"></div>
-        <div class="hero-bg hero-bg2"></div>
-
-        <div class="hero-content">
-            <h1>Barbearia Style</h1>
-            <p>Seu estilo, nossa paixão. Agende seu horário online!</p>
-            <a href="#booking" class="cta-button">Agendar Agora</a>
+            <span class="greeting-text" id="greeting">Bom dia,</span>
+            <span class="user-name" id="userName">Matheus M.</span>
+          </div>
+          <div class="logo-content">
+            <i class="fas fa-cut"></i>
+            <span>Barbearia Style</span>
+          </div>
         </div>
-    </section>
-
-    <section id="services" class="services">
-        <div class="container">
-            <h2>Nossos Serviços</h2>
-            <div class="services-grid">
-                <div class="service-card" data-service="corte" data-price="25.00" data-duration="30">
-                    <i class="fas fa-cut"></i>
-                    <h3>Corte Masculino</h3>
-                    <p>Corte moderno e estiloso</p>
-                    <span class="price">R$ 25,00</span>
-                    <button class="service-details-btn">Ver Detalhes</button>
-                </div>
-                <div class="service-card" data-service="barba" data-price="15.00" data-duration="20">
-                    <i class="fas fa-scissors"></i>
-                    <h3>Barba</h3>
-                    <p>Modelagem e aparar barba</p>
-                    <span class="price">R$ 15,00</span>
-                    <button class="service-details-btn">Ver Detalhes</button>
-                </div>
-                <div class="service-card" data-service="corte_barba" data-price="35.00" data-duration="45">
-                    <i class="fas fa-spa"></i>
-                    <h3>Corte + Barba</h3>
-                    <p>Pacote completo</p>
-                    <span class="price">R$ 35,00</span>
-                    <button class="service-details-btn">Ver Detalhes</button>
-                </div>
-                <div class="service-card" data-service="sobrancelha" data-price="10.00" data-duration="15">
-                    <i class="fas fa-magic"></i>
-                    <h3>Sobrancelha</h3>
-                    <p>Design e limpeza</p>
-                    <span class="price">R$ 10,00</span>
-                    <button class="service-details-btn">Ver Detalhes</button>
-                </div>
-            </div>
+        <ul class="nav-menu">
+          <li><a href="#home" class="nav-link">Início</a></li>
+          <li><a href="#services" class="nav-link">Serviços</a></li>
+          <li><a href="#barbers" class="nav-link">Barbeiros</a></li>
+          <li><a href="#calculator" class="nav-link">Calculadora</a></li>
+          <li><a href="#booking" class="nav-link">Agendar</a></li>
+        </ul>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+            <i class="fas fa-moon"></i>
+          </button>
+          <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
         </div>
-    </section>
+      </div>
+    </nav>
+  </header>
 
-    <section id="barbers" class="barbers-section">
-        <div class="container">
-            <h2>Nossos Barbeiros</h2>
-            <p class="section-subtitle">Profissionais experientes prontos para cuidar do seu estilo</p>
-            <div class="barbers-grid">
-                <div class="barber-card" data-barber="luciano">
-                    <div class="barber-image">
-                        <div class="barber-placeholder">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="barber-badge">
-                            <i class="fas fa-star"></i>
-                            <span>4.9</span>
-                        </div>
-                    </div>
-                    <div class="barber-info">
-                        <h3>Luciano Sousa Barbosa</h3>
-                        <p class="barber-specialty">Especialista em Cortes Modernos</p>
-                        <div class="barber-stats">
-                            <span><i class="fas fa-users"></i> 250+ clientes</span>
-                            <span><i class="fas fa-clock"></i> 5 anos exp.</span>
-                        </div>
-                        <div class="barber-services">
-                            <span class="service-tag">Corte</span>
-                            <span class="service-tag">Barba</span>
-                            <span class="service-tag">Sobrancelha</span>
-                        </div>
-                        <button class="barber-btn" onclick="selectBarber('luciano', 'Luciano Sousa Barbosa')">
-                            Agendar com Luciano
-                        </button>
-                    </div>
-                </div>
+  <section id="home" class="hero">
+    <div class="hero-bg hero-bg1"></div>
+    <div class="hero-bg hero-bg2"></div>
 
-                <div class="barber-card" data-barber="pedro">
-                    <div class="barber-image">
-                        <div class="barber-placeholder">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="barber-badge">
-                            <i class="fas fa-star"></i>
-                            <span>4.8</span>
-                        </div>
-                    </div>
-                    <div class="barber-info">
-                        <h3>Pedro Henrique Rodrigues</h3>
-                        <p class="barber-specialty">Mestre em Design de Barba</p>
-                        <div class="barber-stats">
-                            <span><i class="fas fa-users"></i> 180+ clientes</span>
-                            <span><i class="fas fa-clock"></i> 3 anos exp.</span>
-                        </div>
-                        <div class="barber-services">
-                            <span class="service-tag">Barba</span>
-                            <span class="service-tag">Corte</span>
-                            <span class="service-tag">Pacote</span>
-                        </div>
-                        <button class="barber-btn" onclick="selectBarber('pedro', 'Pedro Henrique Rodrigues')">
-                            Agendar com Pedro
-                        </button>
-                    </div>
-                </div>
-
-                <div class="barber-card" data-barber="joao">
-                    <div class="barber-image">
-                        <div class="barber-placeholder">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="barber-badge">
-                            <i class="fas fa-star"></i>
-                            <span>4.7</span>
-                        </div>
-                    </div>
-                    <div class="barber-info">
-                        <h3>João Vitor Santana</h3>
-                        <p class="barber-specialty">Especialista em Estilos Clássicos</p>
-                        <div class="barber-stats">
-                            <span><i class="fas fa-users"></i> 200+ clientes</span>
-                            <span><i class="fas fa-clock"></i> 4 anos exp.</span>
-                        </div>
-                        <div class="barber-services">
-                            <span class="service-tag">Corte</span>
-                            <span class="service-tag">Sobrancelha</span>
-                            <span class="service-tag">Pacote</span>
-                        </div>
-                        <button class="barber-btn" onclick="selectBarber('joao', 'João Vitor Santana')">
-                            Agendar com João
-                        </button>
-                    </div>
-                </div>
-
-                <div class="barber-card" data-barber="samuel">
-                    <div class="barber-image">
-                        <div class="barber-placeholder">
-                            <i class="fas fa-user"></i>
-                        </div>
-                        <div class="barber-badge">
-                            <i class="fas fa-star"></i>
-                            <span>5.0</span>
-                        </div>
-                    </div>
-                    <div class="barber-info">
-                        <h3>Samuel Torres</h3>
-                        <p class="barber-specialty">Especialista em Cortes Premium</p>
-                        <div class="barber-stats">
-                            <span><i class="fas fa-users"></i> 300+ clientes</span>
-                            <span><i class="fas fa-clock"></i> 7 anos exp.</span>
-                        </div>
-                        <div class="barber-services">
-                            <span class="service-tag">Corte</span>
-                            <span class="service-tag">Barba</span>
-                            <span class="service-tag">Pacote</span>
-                        </div>
-                        <button class="barber-btn" onclick="selectBarber('samuel', 'Samuel Torres')">
-                            Agendar com Samuel
-                        </button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="calculator" class="calculator-section">
-        <div class="container">
-            <h2>Calculadora de Preços</h2>
-            <p class="section-subtitle">Selecione os serviços desejados e veja o valor total</p>
-            <div class="calculator-container">
-                <div class="calculator-services">
-                    <h3>Selecione os Serviços</h3>
-                    <div class="calculator-checkboxes">
-                        <label class="calculator-option">
-                            <input type="checkbox" value="corte" data-price="25.00" data-name="Corte Masculino">
-                            <span>Corte Masculino - R$ 25,00</span>
-                        </label>
-                        <label class="calculator-option">
-                            <input type="checkbox" value="barba" data-price="15.00" data-name="Barba">
-                            <span>Barba - R$ 15,00</span>
-                        </label>
-                        <label class="calculator-option">
-                            <input type="checkbox" value="corte_barba" data-price="35.00" data-name="Corte + Barba">
-                            <span>Corte + Barba - R$ 35,00</span>
-                        </label>
-                        <label class="calculator-option">
-                            <input type="checkbox" value="sobrancelha" data-price="10.00" data-name="Sobrancelha">
-                            <span>Sobrancelha - R$ 10,00</span>
-                        </label>
-                    </div>
-                </div>
-                <div class="calculator-result">
-                    <h3>Resumo</h3>
-                    <div class="selected-services-list" id="selectedServicesList">
-                        <p class="no-selection">Nenhum serviço selecionado</p>
-                    </div>
-                    <div class="calculator-total">
-                        <div class="total-line">
-                            <span>Subtotal:</span>
-                            <span id="subtotal">R$ 0,00</span>
-                        </div>
-                        <div class="total-line discount" id="discountLine" style="display: none;">
-                            <span>Desconto (Pacote):</span>
-                            <span id="discount">-R$ 0,00</span>
-                        </div>
-                        <div class="total-line final">
-                            <span>Total:</span>
-                            <span id="total">R$ 0,00</span>
-                        </div>
-                    </div>
-                    <button class="calculator-btn" id="bookSelectedBtn" disabled>
-                        Agendar Serviços Selecionados
-                    </button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="booking" class="booking-section">
-        <div class="container">
-            <h2>Agendar Horário</h2>
-
-            <div id="step-calendar" class="booking-step active">
-                <h3>1. Escolha a Data</h3>
-                <div class="calendar-container">
-                    <div class="calendar-header">
-                        <button class="calendar-nav">
-                            <i class="fas fa-chevron-left"></i>
-                        </button>
-                        <h4>Outubro 2025</h4>
-                        <button class="calendar-nav">
-                            <i class="fas fa-chevron-right"></i>
-                        </button>
-                    </div>
-                    <div class="calendar-grid">
-                        <div class="calendar-day-header">Dom</div>
-                        <div class="calendar-day-header">Seg</div>
-                        <div class="calendar-day-header">Ter</div>
-                        <div class="calendar-day-header">Qua</div>
-                        <div class="calendar-day-header">Qui</div>
-                        <div class="calendar-day-header">Sex</div>
-                        <div class="calendar-day-header">Sáb</div>
-
-                        <div class="calendar-day empty"></div>
-                        <div class="calendar-day empty"></div>
-                        <div class="calendar-day empty"></div>
-                        <div class="calendar-day">1</div>
-                        <div class="calendar-day">2</div>
-                        <div class="calendar-day">3</div>
-                        <div class="calendar-day">4</div>
-                        <div class="calendar-day">5</div>
-                        <div class="calendar-day">6</div>
-                        <div class="calendar-day">7</div>
-                        <div class="calendar-day">8</div>
-                        <div class="calendar-day">9</div>
-                        <div class="calendar-day">10</div>
-                        <div class="calendar-day">11</div>
-                        <div class="calendar-day">12</div>
-                        <div class="calendar-day">13</div>
-                        <div class="calendar-day">14</div>
-                        <div class="calendar-day">15</div>
-                        <div class="calendar-day">16</div>
-                        <div class="calendar-day">17</div>
-                        <div class="calendar-day">18</div>
-                        <div class="calendar-day">19</div>
-                        <div class="calendar-day">20</div>
-                        <div class="calendar-day">21</div>
-                        <div class="calendar-day">22</div>
-                        <div class="calendar-day">23</div>
-                        <div class="calendar-day">24</div>
-                        <div class="calendar-day">25</div>
-                        <div class="calendar-day">26</div>
-                        <div class="calendar-day">27</div>
-                        <div class="calendar-day">28</div>
-                        <div class="calendar-day">29</div>
-                        <div class="calendar-day">30</div>
-                        <div class="calendar-day">31</div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="step-time" class="booking-step">
-                <h3>2. Escolha o Horário</h3>
-                <div class="selected-date-info">
-                    <p>Data selecionada: <span>Segunda-feira, 15 de janeiro de 2024</span></p>
-                </div>
-                <div class="time-slots-container">
-                    <h4>Horários Disponíveis</h4>
-                    <div class="time-slots">
-                        <div class="time-slot">08:00</div>
-                        <div class="time-slot">09:00</div>
-                        <div class="time-slot">10:00</div>
-                        <div class="time-slot">11:00</div>
-                        <div class="time-slot">14:00</div>
-                        <div class="time-slot">14:30</div>
-                        <div class="time-slot">15:00</div>
-                        <div class="time-slot">15:30</div>
-                        <div class="time-slot">16:00</div>
-                        <div class="time-slot">17:00</div>
-                        <div class="time-slot">17:30</div>
-                        <div class="time-slot">18:00</div>
-
-                    </div>
-                </div>
-                <div class="step-navigation">
-                    <button class="btn-secondary" data-step-back="calendar">Voltar</button>
-                </div>
-            </div>
-
-            <div id="step-service" class="booking-step">
-                <h3>3. Escolha o Serviço, Barbeiro e Confirme</h3>
-                <div class="selected-info">
-                    <p><strong>Data:</strong> <span>Segunda-feira, 15 de janeiro de 2024</span></p>
-                    <p><strong>Horário:</strong> <span>14:30</span></p>
-                </div>
-
-                <form id="bookingForm" class="form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="service">Serviço</label>
-                            <select id="service" name="service" required>
-                                <option value="">Selecione um serviço</option>
-                                <option value="corte">Corte Masculino - R$ 25,00</option>
-                                <option value="barba">Barba - R$ 15,00</option>
-                                <option value="corte_barba">Corte + Barba - R$ 35,00</option>
-                                <option value="sobrancelha">Sobrancelha - R$ 10,00</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="barber">Barbeiro</label>
-                            <select id="barber" name="barber" required>
-                                <option value="">Selecione um barbeiro</option>
-                                <option value="luciano">Luciano Sousa Barbosa</option>
-                                <option value="pedro">Pedro Henrique Rodrigues</option>
-                                <option value="joao">João Vitor Santana</option>
-                                <option value="samuel">Samuel Torres</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="notes">Observações (opcional)</label>
-                        <textarea id="notes" name="notes" rows="3"
-                            placeholder="Alguma observação especial..."></textarea>
-                    </div>
-
-                    <div class="step-navigation">
-                        <button type="button" class="btn-secondary" data-step-back="time">Voltar</button>
-                        <button type="submit" class="submit-btn btn-primary">Confirmar Agendamento</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>
-                        <i class="fas fa-cut"></i>
-                        Barbearia Style
-                    </h3>
-                    <p>Seu estilo, nossa paixão. Agende seu horário online e cuide do seu visual com os melhores profissionais.</p>
-                    <div class="social-links">
-                        <a href="https://instagram.com/barbeariaStyle01" target="_blank" aria-label="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://facebook.com/barbeariaStyle" target="_blank" aria-label="Facebook">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="https://twitter.com/barbeariaStyle" target="_blank" aria-label="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Links Rápidos</h4>
-                    <ul>
-                        <li><a href="#home">Início</a></li>
-                        <li><a href="#services">Serviços</a></li>
-                        <li><a href="#barbers">Barbeiros</a></li>
-                        <li><a href="#calculator">Calculadora</a></li>
-                        <li><a href="#booking">Agendar</a></li>
-                        <li><a href="#contact">Contato</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Serviços</h4>
-                    <ul>
-                        <li><a href="#services">Corte Masculino</a></li>
-                        <li><a href="#services">Barba</a></li>
-                        <li><a href="#services">Corte + Barba</a></li>
-                        <li><a href="#services">Sobrancelha</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Contato</h4>
-                    <ul class="contact-list">
-                        <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Rua Cícero Duarte, 905<br>Junco - Picos/PI</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+5586999999999">(86) 99999-9999</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:contato@barbeariastyle.com">contato@barbeariastyle.com</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-clock"></i>
-                            <span>Seg - Sex: 8h às 18h<br>Sáb: 8h às 16h</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2025 Barbearia Style. Todos os direitos reservados.</p>
-            </div>
-        </div>
-    </footer>
-
-    <a href="https://wa.me/558981356580?text=Olá!%20Gostaria%20de%20agendar%20um%20horário." 
-       class="whatsapp-float" 
-       target="_blank" 
-       aria-label="Fale conosco no WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-        <span class="whatsapp-tooltip">Fale conosco!</span>
-    </a>
-
-    <div id="serviceModal" class="service-modal" style="display:none;">
-        <div class="modal-overlay"></div>
-        <div class="modal-content-service">
-            <button class="modal-close" id="closeServiceModal">&times;</button>
-            <div class="modal-header">
-                <div class="service-icon-large" id="modalServiceIcon">
-                    <i class="fas fa-cut"></i>
-                </div>
-                <h2 id="modalServiceTitle">Corte Masculino</h2>
-            </div>
-            <div class="modal-body">
-                <div class="service-detail-item">
-                    <i class="fas fa-dollar-sign"></i>
-                    <div>
-                        <strong>Preço:</strong>
-                        <span id="modalServicePrice">R$ 25,00</span>
-                    </div>
-                </div>
-                <div class="service-detail-item">
-                    <i class="fas fa-clock"></i>
-                    <div>
-                        <strong>Duração:</strong>
-                        <span id="modalServiceDuration">30 minutos</span>
-                    </div>
-                </div>
-                <div class="service-detail-item">
-                    <i class="fas fa-info-circle"></i>
-                    <div>
-                        <strong>Descrição:</strong>
-                        <p id="modalServiceDescription">Corte moderno e estiloso realizado por profissionais experientes.</p>
-                    </div>
-                </div>
-                <div class="service-detail-item">
-                    <i class="fas fa-check-circle"></i>
-                    <div>
-                        <strong>Inclui:</strong>
-                        <ul id="modalServiceIncludes">
-                            <li>Corte personalizado</li>
-                            <li>Acabamento profissional</li>
-                            <li>Produtos de qualidade</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button class="btn-secondary" id="addToCalculatorBtn">Adicionar à Calculadora</button>
-                <button class="btn-primary" id="bookServiceBtn">Agendar Este Serviço</button>
-            </div>
-        </div>
+    <div class="hero-content">
+      <h1>Barbearia Style</h1>
+      <p>Seu estilo, nossa paixão. Agende seu horário online!</p>
+      <a href="#booking" class="cta-button">Agendar Agora</a>
     </div>
+  </section>
 
-    <div id="confirmationPopup" class="confirmation-popup" style="display:none;">
-        <div class="popup-content">
-            <button id="closePopup" class="close-btn" aria-label="Fechar">&times;</button>
-            <div class="popup-icon">
-                <i class="fas fa-check-circle"></i>
-            </div>
-            <p class="popup-title">Agendamento realizado com sucesso!</p>
-            <div class="popup-details">
-                <p><strong>Data:</strong> <span id="popupDate"></span></p>
-                <p><strong>Horário:</strong> <span id="popupTime"></span></p>
-                <p><strong>Serviço:</strong> <span id="popupService"></span></p>
-                <p><strong>Barbeiro:</strong> <span id="popupBarber"></span></p>
-            </div>
+  <section id="services" class="services">
+    <div class="container">
+      <h2>Nossos Serviços</h2>
+      <div class="services-grid">
+        <div class="service-card" data-service="corte" data-price="25.00" data-duration="30">
+          <i class="fas fa-cut"></i>
+          <h3>Corte Masculino</h3>
+          <p>Corte moderno e estiloso</p>
+          <span class="price">R$ 25,00</span>
+          <button class="service-details-btn">Ver Detalhes</button>
         </div>
+        <div class="service-card" data-service="barba" data-price="15.00" data-duration="20">
+          <i class="fas fa-scissors"></i>
+          <h3>Barba</h3>
+          <p>Modelagem e aparar barba</p>
+          <span class="price">R$ 15,00</span>
+          <button class="service-details-btn">Ver Detalhes</button>
+        </div>
+        <div class="service-card" data-service="corte_barba" data-price="35.00" data-duration="45">
+          <i class="fas fa-spa"></i>
+          <h3>Corte + Barba</h3>
+          <p>Pacote completo</p>
+          <span class="price">R$ 35,00</span>
+          <button class="service-details-btn">Ver Detalhes</button>
+        </div>
+        <div class="service-card" data-service="sobrancelha" data-price="10.00" data-duration="15">
+          <i class="fas fa-magic"></i>
+          <h3>Sobrancelha</h3>
+          <p>Design e limpeza</p>
+          <span class="price">R$ 10,00</span>
+          <button class="service-details-btn">Ver Detalhes</button>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <div id="cookieConsentBanner" class="cookie-consent-banner" aria-live="polite">
-        <p>
-            Usamos cookies para melhorar sua experiencia no site. Ao continuar, voce concorda com esse uso.
-        </p>
-        <button id="acceptCookiesBtn" type="button" class="cookie-consent-btn">Aceitar</button>
+  <section id="barbers" class="barbers-section">
+    <div class="container">
+      <h2>Nossos Barbeiros</h2>
+      <p class="section-subtitle">Profissionais experientes prontos para cuidar do seu estilo</p>
+      <div class="barbers-grid">
+        <div class="barber-card" data-barber="luciano">
+          <div class="barber-image">
+            <div class="barber-placeholder">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="barber-badge">
+              <i class="fas fa-star"></i>
+              <span>4.9</span>
+            </div>
+          </div>
+          <div class="barber-info">
+            <h3>Luciano Sousa Barbosa</h3>
+            <p class="barber-specialty">Especialista em Cortes Modernos</p>
+            <div class="barber-stats">
+              <span><i class="fas fa-users"></i> 250+ clientes</span>
+              <span><i class="fas fa-clock"></i> 5 anos exp.</span>
+            </div>
+            <div class="barber-services">
+              <span class="service-tag">Corte</span>
+              <span class="service-tag">Barba</span>
+              <span class="service-tag">Sobrancelha</span>
+            </div>
+            <button class="barber-btn" onclick="selectBarber('luciano', 'Luciano Sousa Barbosa')">
+              Agendar com Luciano
+            </button>
+          </div>
+        </div>
+
+        <div class="barber-card" data-barber="pedro">
+          <div class="barber-image">
+            <div class="barber-placeholder">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="barber-badge">
+              <i class="fas fa-star"></i>
+              <span>4.8</span>
+            </div>
+          </div>
+          <div class="barber-info">
+            <h3>Pedro Henrique Rodrigues</h3>
+            <p class="barber-specialty">Mestre em Design de Barba</p>
+            <div class="barber-stats">
+              <span><i class="fas fa-users"></i> 180+ clientes</span>
+              <span><i class="fas fa-clock"></i> 3 anos exp.</span>
+            </div>
+            <div class="barber-services">
+              <span class="service-tag">Barba</span>
+              <span class="service-tag">Corte</span>
+              <span class="service-tag">Pacote</span>
+            </div>
+            <button class="barber-btn" onclick="selectBarber('pedro', 'Pedro Henrique Rodrigues')">
+              Agendar com Pedro
+            </button>
+          </div>
+        </div>
+
+        <div class="barber-card" data-barber="joao">
+          <div class="barber-image">
+            <div class="barber-placeholder">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="barber-badge">
+              <i class="fas fa-star"></i>
+              <span>4.7</span>
+            </div>
+          </div>
+          <div class="barber-info">
+            <h3>João Vitor Santana</h3>
+            <p class="barber-specialty">Especialista em Estilos Clássicos</p>
+            <div class="barber-stats">
+              <span><i class="fas fa-users"></i> 200+ clientes</span>
+              <span><i class="fas fa-clock"></i> 4 anos exp.</span>
+            </div>
+            <div class="barber-services">
+              <span class="service-tag">Corte</span>
+              <span class="service-tag">Sobrancelha</span>
+              <span class="service-tag">Pacote</span>
+            </div>
+            <button class="barber-btn" onclick="selectBarber('joao', 'João Vitor Santana')">
+              Agendar com João
+            </button>
+          </div>
+        </div>
+
+        <div class="barber-card" data-barber="samuel">
+          <div class="barber-image">
+            <div class="barber-placeholder">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="barber-badge">
+              <i class="fas fa-star"></i>
+              <span>5.0</span>
+            </div>
+          </div>
+          <div class="barber-info">
+            <h3>Samuel Torres</h3>
+            <p class="barber-specialty">Especialista em Cortes Premium</p>
+            <div class="barber-stats">
+              <span><i class="fas fa-users"></i> 300+ clientes</span>
+              <span><i class="fas fa-clock"></i> 7 anos exp.</span>
+            </div>
+            <div class="barber-services">
+              <span class="service-tag">Corte</span>
+              <span class="service-tag">Barba</span>
+              <span class="service-tag">Pacote</span>
+            </div>
+            <button class="barber-btn" onclick="selectBarber('samuel', 'Samuel Torres')">
+              Agendar com Samuel
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
+  </section>
 
-    <script src="/web/script/api.js"></script>
-    <script src="/web/script/auth-guard.js"></script>
-    <script src="/web/script/theme.js"></script>
-    <script src="/web/script/home.js"></script>
+  <section id="calculator" class="calculator-section">
+    <div class="container">
+      <h2>Calculadora de Preços</h2>
+      <p class="section-subtitle">Selecione os serviços desejados e veja o valor total</p>
+      <div class="calculator-container">
+        <div class="calculator-services">
+          <h3>Selecione os Serviços</h3>
+          <div class="calculator-checkboxes">
+            <label class="calculator-option">
+              <input type="checkbox" value="corte" data-price="25.00" data-name="Corte Masculino">
+              <span>Corte Masculino - R$ 25,00</span>
+            </label>
+            <label class="calculator-option">
+              <input type="checkbox" value="barba" data-price="15.00" data-name="Barba">
+              <span>Barba - R$ 15,00</span>
+            </label>
+            <label class="calculator-option">
+              <input type="checkbox" value="corte_barba" data-price="35.00" data-name="Corte + Barba">
+              <span>Corte + Barba - R$ 35,00</span>
+            </label>
+            <label class="calculator-option">
+              <input type="checkbox" value="sobrancelha" data-price="10.00" data-name="Sobrancelha">
+              <span>Sobrancelha - R$ 10,00</span>
+            </label>
+          </div>
+        </div>
+        <div class="calculator-result">
+          <h3>Resumo</h3>
+          <div class="selected-services-list" id="selectedServicesList">
+            <p class="no-selection">Nenhum serviço selecionado</p>
+          </div>
+          <div class="calculator-total">
+            <div class="total-line">
+              <span>Subtotal:</span>
+              <span id="subtotal">R$ 0,00</span>
+            </div>
+            <div class="total-line discount" id="discountLine" style="display: none;">
+              <span>Desconto (Pacote):</span>
+              <span id="discount">-R$ 0,00</span>
+            </div>
+            <div class="total-line final">
+              <span>Total:</span>
+              <span id="total">R$ 0,00</span>
+            </div>
+          </div>
+          <button class="calculator-btn" id="bookSelectedBtn" disabled>
+            Agendar Serviços Selecionados
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="booking" class="booking-section">
+    <div class="container">
+      <h2>Agendar Horário</h2>
+
+      <div id="step-calendar" class="booking-step active">
+        <h3>1. Escolha a Data</h3>
+        <div class="calendar-container">
+          <div class="calendar-header">
+            <button class="calendar-nav">
+              <i class="fas fa-chevron-left"></i>
+            </button>
+            <h4>Outubro 2025</h4>
+            <button class="calendar-nav">
+              <i class="fas fa-chevron-right"></i>
+            </button>
+          </div>
+          <div class="calendar-grid">
+            <div class="calendar-day-header">Dom</div>
+            <div class="calendar-day-header">Seg</div>
+            <div class="calendar-day-header">Ter</div>
+            <div class="calendar-day-header">Qua</div>
+            <div class="calendar-day-header">Qui</div>
+            <div class="calendar-day-header">Sex</div>
+            <div class="calendar-day-header">Sáb</div>
+
+            <div class="calendar-day empty"></div>
+            <div class="calendar-day empty"></div>
+            <div class="calendar-day empty"></div>
+            <div class="calendar-day">1</div>
+            <div class="calendar-day">2</div>
+            <div class="calendar-day">3</div>
+            <div class="calendar-day">4</div>
+            <div class="calendar-day">5</div>
+            <div class="calendar-day">6</div>
+            <div class="calendar-day">7</div>
+            <div class="calendar-day">8</div>
+            <div class="calendar-day">9</div>
+            <div class="calendar-day">10</div>
+            <div class="calendar-day">11</div>
+            <div class="calendar-day">12</div>
+            <div class="calendar-day">13</div>
+            <div class="calendar-day">14</div>
+            <div class="calendar-day">15</div>
+            <div class="calendar-day">16</div>
+            <div class="calendar-day">17</div>
+            <div class="calendar-day">18</div>
+            <div class="calendar-day">19</div>
+            <div class="calendar-day">20</div>
+            <div class="calendar-day">21</div>
+            <div class="calendar-day">22</div>
+            <div class="calendar-day">23</div>
+            <div class="calendar-day">24</div>
+            <div class="calendar-day">25</div>
+            <div class="calendar-day">26</div>
+            <div class="calendar-day">27</div>
+            <div class="calendar-day">28</div>
+            <div class="calendar-day">29</div>
+            <div class="calendar-day">30</div>
+            <div class="calendar-day">31</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="step-time" class="booking-step">
+        <h3>2. Escolha o Horário</h3>
+        <div class="selected-date-info">
+          <p>Data selecionada: <span>Segunda-feira, 15 de janeiro de 2024</span></p>
+        </div>
+        <div class="time-slots-container">
+          <h4>Horários Disponíveis</h4>
+          <div class="time-slots">
+            <div class="time-slot">08:00</div>
+            <div class="time-slot">09:00</div>
+            <div class="time-slot">10:00</div>
+            <div class="time-slot">11:00</div>
+            <div class="time-slot">14:00</div>
+            <div class="time-slot">14:30</div>
+            <div class="time-slot">15:00</div>
+            <div class="time-slot">15:30</div>
+            <div class="time-slot">16:00</div>
+            <div class="time-slot">17:00</div>
+            <div class="time-slot">17:30</div>
+            <div class="time-slot">18:00</div>
+
+          </div>
+        </div>
+        <div class="step-navigation">
+          <button class="btn-secondary" data-step-back="calendar">Voltar</button>
+        </div>
+      </div>
+
+      <div id="step-service" class="booking-step">
+        <h3>3. Escolha o Serviço, Barbeiro e Confirme</h3>
+        <div class="selected-info">
+          <p><strong>Data:</strong> <span>Segunda-feira, 15 de janeiro de 2024</span></p>
+          <p><strong>Horário:</strong> <span>14:30</span></p>
+        </div>
+
+        <form id="bookingForm" class="form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="service">Serviço</label>
+              <select id="service" name="service" required>
+                <option value="">Selecione um serviço</option>
+                <option value="corte">Corte Masculino - R$ 25,00</option>
+                <option value="barba">Barba - R$ 15,00</option>
+                <option value="corte_barba">Corte + Barba - R$ 35,00</option>
+                <option value="sobrancelha">Sobrancelha - R$ 10,00</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="barber">Barbeiro</label>
+              <select id="barber" name="barber" required>
+                <option value="">Selecione um barbeiro</option>
+                <option value="luciano">Luciano Sousa Barbosa</option>
+                <option value="pedro">Pedro Henrique Rodrigues</option>
+                <option value="joao">João Vitor Santana</option>
+                <option value="samuel">Samuel Torres</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="notes">Observações (opcional)</label>
+            <textarea id="notes" name="notes" rows="3"
+              placeholder="Alguma observação especial..."></textarea>
+          </div>
+
+          <div class="step-navigation">
+            <button type="button" class="btn-secondary" data-step-back="time">Voltar</button>
+            <button type="submit" class="submit-btn btn-primary">Confirmar Agendamento</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>
+            <i class="fas fa-cut"></i>
+            Barbearia Style
+          </h3>
+          <p>Seu estilo, nossa paixão. Agende seu horário online e cuide do seu visual com os melhores profissionais.</p>
+          <div class="social-links">
+            <a href="https://instagram.com/barbeariaStyle01" target="_blank" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://facebook.com/barbeariaStyle" target="_blank" aria-label="Facebook">
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://twitter.com/barbeariaStyle" target="_blank" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Links Rápidos</h4>
+          <ul>
+            <li><a href="#home">Início</a></li>
+            <li><a href="#services">Serviços</a></li>
+            <li><a href="#barbers">Barbeiros</a></li>
+            <li><a href="#calculator">Calculadora</a></li>
+            <li><a href="#booking">Agendar</a></li>
+            <li><a href="#contact">Contato</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Serviços</h4>
+          <ul>
+            <li><a href="#services">Corte Masculino</a></li>
+            <li><a href="#services">Barba</a></li>
+            <li><a href="#services">Corte + Barba</a></li>
+            <li><a href="#services">Sobrancelha</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contato</h4>
+          <ul class="contact-list">
+            <li>
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Rua Cícero Duarte, 905<br>Junco - Picos/PI</span>
+            </li>
+            <li>
+              <i class="fas fa-phone"></i>
+              <a href="tel:+5586999999999">(86) 99999-9999</a>
+            </li>
+            <li>
+              <i class="fas fa-envelope"></i>
+              <a href="mailto:contato@barbeariastyle.com">contato@barbeariastyle.com</a>
+            </li>
+            <li>
+              <i class="fas fa-clock"></i>
+              <span>Seg - Sex: 8h às 18h<br>Sáb: 8h às 16h</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Barbearia Style. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/558981356580?text=Olá!%20Gostaria%20de%20agendar%20um%20horário." 
+     class="whatsapp-float" 
+     target="_blank" 
+     aria-label="Fale conosco no WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+    <span class="whatsapp-tooltip">Fale conosco!</span>
+  </a>
+
+  <div id="serviceModal" class="service-modal" style="display:none;">
+    <div class="modal-overlay"></div>
+    <div class="modal-content-service">
+      <button class="modal-close" id="closeServiceModal">&times;</button>
+      <div class="modal-header">
+        <div class="service-icon-large" id="modalServiceIcon">
+          <i class="fas fa-cut"></i>
+        </div>
+        <h2 id="modalServiceTitle">Corte Masculino</h2>
+      </div>
+      <div class="modal-body">
+        <div class="service-detail-item">
+          <i class="fas fa-dollar-sign"></i>
+          <div>
+            <strong>Preço:</strong>
+            <span id="modalServicePrice">R$ 25,00</span>
+          </div>
+        </div>
+        <div class="service-detail-item">
+          <i class="fas fa-clock"></i>
+          <div>
+            <strong>Duração:</strong>
+            <span id="modalServiceDuration">30 minutos</span>
+          </div>
+        </div>
+        <div class="service-detail-item">
+          <i class="fas fa-info-circle"></i>
+          <div>
+            <strong>Descrição:</strong>
+            <p id="modalServiceDescription">Corte moderno e estiloso realizado por profissionais experientes.</p>
+          </div>
+        </div>
+        <div class="service-detail-item">
+          <i class="fas fa-check-circle"></i>
+          <div>
+            <strong>Inclui:</strong>
+            <ul id="modalServiceIncludes">
+              <li>Corte personalizado</li>
+              <li>Acabamento profissional</li>
+              <li>Produtos de qualidade</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="addToCalculatorBtn">Adicionar à Calculadora</button>
+        <button class="btn-primary" id="bookServiceBtn">Agendar Este Serviço</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="confirmationPopup" class="confirmation-popup" style="display:none;">
+    <div class="popup-content">
+      <button id="closePopup" class="close-btn" aria-label="Fechar">&times;</button>
+      <div class="popup-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <p class="popup-title">Agendamento realizado com sucesso!</p>
+      <div class="popup-details">
+        <p><strong>Data:</strong> <span id="popupDate"></span></p>
+        <p><strong>Horário:</strong> <span id="popupTime"></span></p>
+        <p><strong>Serviço:</strong> <span id="popupService"></span></p>
+        <p><strong>Barbeiro:</strong> <span id="popupBarber"></span></p>
+      </div>
+    </div>
+  </div>
+
+  <div id="cookieConsentBanner" class="cookie-consent-banner" aria-live="polite">
+    <p>
+      Usamos cookies para melhorar sua experiencia no site. Ao continuar, voce concorda com esse uso.
+    </p>
+    <button id="acceptCookiesBtn" type="button" class="cookie-consent-btn">Aceitar</button>
+  </div>
+
+  <script src="/web/script/api.js"></script>
+  <script src="/web/script/auth-guard.js"></script>
+  <script src="/web/script/theme.js"></script>
+  <script src="/web/script/home.js"></script>
 </body>
 
 </html>

@@ -2,212 +2,212 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barbearia Style - Login e Cadastro</title>
-    <link rel="icon" href="/web/img/favicon-96x96.png" type="image/x-icon">
-    <link rel="stylesheet" href="/web/style/common.css">
-    <link rel="stylesheet" href="/web/style/login.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barbearia Style - Login e Cadastro</title>
+  <link rel="icon" href="/web/img/favicon-96x96.png" type="image/x-icon">
+  <link rel="stylesheet" href="/web/style/common.css">
+  <link rel="stylesheet" href="/web/style/login.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <header class="header">
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="logo">
-                    <i class="fas fa-cut"></i>
-                    <span>Barbearia Style</span>
-                </div>
-                <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
-                    <i class="fas fa-moon"></i>
-                </button>
-            </div>
-        </nav>
-    </header>
-
-    <section class="main-login-section">
-        <div class="login-container">
-            <div class="welcome-header">
-                <h1>Bem-vindo à Barbearia Style</h1>
-                <p>Faça login ou cadastre-se para agendar seu horário</p>
-            </div>
-
-            <div class="login-cadastro-tabs">
-                <button class="tab-button active" onclick="showTab('login')">Entrar</button>
-                <button class="tab-button" onclick="showTab('cadastro')">Cadastrar</button>
-            </div>
-
-            <div id="login-tab" class="tab-content active">
-                <div class="login-card">
-                    <form class="login-form" action="home.html" method="get">
-                        <div class="form-group">
-                            <label for="loginEmail">E-mail</label>
-                            <div class="input-group">
-                                <i class="fas fa-envelope"></i>
-                                <input type="email" id="loginEmail" name="loginEmail" placeholder="Digite seu e-mail"
-                                    required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="loginPassword">Senha</label>
-                            <div class="input-group">
-                                <i class="fas fa-lock"></i>
-                                <input type="password" id="loginPassword" name="loginPassword"
-                                    placeholder="Digite sua senha" required>
-                                <span class="toggle-password">
-                                    <i class="fas fa-eye olho" id="toggleLoginPassword"></i>
-                                </span>
-                            </div>
-                        </div>
-
-                        <div class="form-options">
-                            <label class="checkbox-container">
-                                <input type="checkbox" name="remember">
-                                <span class="checkmark"></span>
-                                Lembrar de mim
-                            </label>
-                            <a href="#" class="forgot-password">Esqueceu a senha?</a>
-                        </div>
-
-                        <button type="submit" class="login-btn">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Entrar
-                        </button>
-                    </form>
-                </div>
-            </div>
-
-            <div id="cadastro-tab" class="tab-content">
-                <div class="cadastro-card">
-                    <form class="cadastro-form" action="home.html" method="get">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="name">Nome Completo</label>
-                                <input type="text" id="name" name="name" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="phone">Telefone</label>
-                                <input type="tel" id="phone" name="phone" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="email">E-mail</label>
-                            <input type="email" id="email" name="email" required>
-                        </div>
-
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="password">Senha</label>
-                                <input type="password" id="password" name="password" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="confirmPassword">Confirmar Senha</label>
-                                <input type="password" id="confirmPassword" name="confirmPassword" required>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="birthdate">Data de Nascimento</label>
-                            <input type="date" id="birthdate" name="birthdate" required>
-                        </div>
-
-                        <button type="submit" class="cadastro-btn">
-                            <i class="fas fa-user-plus"></i>
-                            Cadastrar
-                        </button>
-                    </form>
-                </div>
-            </div>
+  <header class="header">
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <i class="fas fa-cut"></i>
+          <span>Barbearia Style</span>
         </div>
-    </section>
+        <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+          <i class="fas fa-moon"></i>
+        </button>
+      </div>
+    </nav>
+  </header>
 
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>
-                        <i class="fas fa-cut"></i>
-                        Barbearia Style
-                    </h3>
-                    <p>Seu estilo, nossa paixão. Agende seu horário online e cuide do seu visual com os melhores profissionais.</p>
-                    <div class="social-links">
-                        <a href="https://instagram.com/barbeariaStyle01" target="_blank" aria-label="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://facebook.com/barbeariaStyle" target="_blank" aria-label="Facebook">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="https://twitter.com/barbeariaStyle" target="_blank" aria-label="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                    </div>
-                </div>
+  <section class="main-login-section">
+    <div class="login-container">
+      <div class="welcome-header">
+        <h1>Bem-vindo à Barbearia Style</h1>
+        <p>Faça login ou cadastre-se para agendar seu horário</p>
+      </div>
 
-                <div class="footer-section">
-                    <h4>Links Rápidos</h4>
-                    <ul>
-                        <li><a href="/web/index/home.html#home">Início</a></li>
-                        <li><a href="/web/index/home.html#services">Serviços</a></li>
-                        <li><a href="/web/index/home.html#barbers">Barbeiros</a></li>
-                        <li><a href="/web/index/home.html#calculator">Calculadora</a></li>
-                        <li><a href="/web/index/home.html#booking">Agendar</a></li>
-                        <li><a href="/web/index/home.html#contact">Contato</a></li>
-                    </ul>
-                </div>
+      <div class="login-cadastro-tabs">
+        <button class="tab-button active" onclick="showTab('login')">Entrar</button>
+        <button class="tab-button" onclick="showTab('cadastro')">Cadastrar</button>
+      </div>
 
-                <div class="footer-section">
-                    <h4>Serviços</h4>
-                    <ul>
-                        <li><a href="/web/index/home.html#services">Corte Masculino</a></li>
-                        <li><a href="/web/index/home.html#services">Barba</a></li>
-                        <li><a href="/web/index/home.html#services">Corte + Barba</a></li>
-                        <li><a href="/web/index/home.html#services">Sobrancelha</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Contato</h4>
-                    <ul class="contact-list">
-                        <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Rua Cícero Duarte, 905<br>Junco - Picos/PI</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+5586999999999">(86) 99999-9999</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:contato@barbeariastyle.com">contato@barbeariastyle.com</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-clock"></i>
-                            <span>Seg - Sex: 8h às 18h<br>Sáb: 8h às 16h</span>
-                        </li>
-                    </ul>
-                </div>
+      <div id="login-tab" class="tab-content active">
+        <div class="login-card">
+          <form class="login-form" action="home.html" method="get">
+            <div class="form-group">
+              <label for="loginEmail">E-mail</label>
+              <div class="input-group">
+                <i class="fas fa-envelope"></i>
+                <input type="email" id="loginEmail" name="loginEmail" placeholder="Digite seu e-mail"
+                  required>
+              </div>
             </div>
 
-            <div class="footer-bottom">
-                <p>&copy; 2025 Barbearia Style. Todos os direitos reservados.</p>
+            <div class="form-group">
+              <label for="loginPassword">Senha</label>
+              <div class="input-group">
+                <i class="fas fa-lock"></i>
+                <input type="password" id="loginPassword" name="loginPassword"
+                  placeholder="Digite sua senha" required>
+                <span class="toggle-password">
+                  <i class="fas fa-eye olho" id="toggleLoginPassword"></i>
+                </span>
+              </div>
             </div>
+
+            <div class="form-options">
+              <label class="checkbox-container">
+                <input type="checkbox" name="remember">
+                <span class="checkmark"></span>
+                Lembrar de mim
+              </label>
+              <a href="#" class="forgot-password">Esqueceu a senha?</a>
+            </div>
+
+            <button type="submit" class="login-btn">
+              <i class="fas fa-sign-in-alt"></i>
+              Entrar
+            </button>
+          </form>
         </div>
-    </footer>
+      </div>
 
-    <a href="https://wa.me/558981356580?text=Olá!%20Gostaria%20de%20agendar%20um%20horário." 
-       class="whatsapp-float" 
-       target="_blank" 
-       aria-label="Fale conosco no WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-        <span class="whatsapp-tooltip">Fale conosco!</span>
-    </a>
+      <div id="cadastro-tab" class="tab-content">
+        <div class="cadastro-card">
+          <form class="cadastro-form" action="home.html" method="get">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="name">Nome Completo</label>
+                <input type="text" id="name" name="name" required>
+              </div>
+              <div class="form-group">
+                <label for="phone">Telefone</label>
+                <input type="tel" id="phone" name="phone" required>
+              </div>
+            </div>
 
-    <script src="/web/script/api.js"></script>
-    <script src="/web/script/theme.js"></script>
-    <script src="/web/script/login.js"></script>
+            <div class="form-group">
+              <label for="email">E-mail</label>
+              <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" required>
+              </div>
+              <div class="form-group">
+                <label for="confirmPassword">Confirmar Senha</label>
+                <input type="password" id="confirmPassword" name="confirmPassword" required>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="birthdate">Data de Nascimento</label>
+              <input type="date" id="birthdate" name="birthdate" required>
+            </div>
+
+            <button type="submit" class="cadastro-btn">
+              <i class="fas fa-user-plus"></i>
+              Cadastrar
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>
+            <i class="fas fa-cut"></i>
+            Barbearia Style
+          </h3>
+          <p>Seu estilo, nossa paixão. Agende seu horário online e cuide do seu visual com os melhores profissionais.</p>
+          <div class="social-links">
+            <a href="https://instagram.com/barbeariaStyle01" target="_blank" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://facebook.com/barbeariaStyle" target="_blank" aria-label="Facebook">
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://twitter.com/barbeariaStyle" target="_blank" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Links Rápidos</h4>
+          <ul>
+            <li><a href="/web/index/home.html#home">Início</a></li>
+            <li><a href="/web/index/home.html#services">Serviços</a></li>
+            <li><a href="/web/index/home.html#barbers">Barbeiros</a></li>
+            <li><a href="/web/index/home.html#calculator">Calculadora</a></li>
+            <li><a href="/web/index/home.html#booking">Agendar</a></li>
+            <li><a href="/web/index/home.html#contact">Contato</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Serviços</h4>
+          <ul>
+            <li><a href="/web/index/home.html#services">Corte Masculino</a></li>
+            <li><a href="/web/index/home.html#services">Barba</a></li>
+            <li><a href="/web/index/home.html#services">Corte + Barba</a></li>
+            <li><a href="/web/index/home.html#services">Sobrancelha</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contato</h4>
+          <ul class="contact-list">
+            <li>
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Rua Cícero Duarte, 905<br>Junco - Picos/PI</span>
+            </li>
+            <li>
+              <i class="fas fa-phone"></i>
+              <a href="tel:+5586999999999">(86) 99999-9999</a>
+            </li>
+            <li>
+              <i class="fas fa-envelope"></i>
+              <a href="mailto:contato@barbeariastyle.com">contato@barbeariastyle.com</a>
+            </li>
+            <li>
+              <i class="fas fa-clock"></i>
+              <span>Seg - Sex: 8h às 18h<br>Sáb: 8h às 16h</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Barbearia Style. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/558981356580?text=Olá!%20Gostaria%20de%20agendar%20um%20horário." 
+     class="whatsapp-float" 
+     target="_blank" 
+     aria-label="Fale conosco no WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+    <span class="whatsapp-tooltip">Fale conosco!</span>
+  </a>
+
+  <script src="/web/script/api.js"></script>
+  <script src="/web/script/theme.js"></script>
+  <script src="/web/script/login.js"></script>
 </body>
 
 </html>

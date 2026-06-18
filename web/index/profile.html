@@ -2,228 +2,228 @@
 <html lang="pt-BR">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Barbearia Style - Perfil do Usuário</title>
-    <link rel="icon" href="/web/img/favicon-96x96.png" type="image/x-icon">
-    <link rel="stylesheet" href="/web/style/common.css">
-    <link rel="stylesheet" href="/web/style/profile.css">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Barbearia Style - Perfil do Usuário</title>
+  <link rel="icon" href="/web/img/favicon-96x96.png" type="image/x-icon">
+  <link rel="stylesheet" href="/web/style/common.css">
+  <link rel="stylesheet" href="/web/style/profile.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 </head>
 
 <body>
-    <header class="header">
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="logo">
-                    <div class="logo-content">
-                        <i class="fas fa-cut"></i>
-                        <span>Barbearia Style</span>
-                    </div>
-                </div>
-                <ul class="nav-menu">
-                    <li><a href="/web/index/home.html" class="nav-link">Voltar</a></li>
-                </ul>
-                <div style="display: flex; align-items: center; gap: 1rem;">
-                    <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
-                        <i class="fas fa-moon"></i>
-                    </button>
-                    <div class="hamburger">
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                        <span class="bar"></span>
-                    </div>
-                </div>
-            </div>
-        </nav>
-    </header>
-
-    <section id="profile" class="profile-section">
-        <div class="container">
-            <h2>Meu Perfil</h2>
-            <div class="profile-container">
-                <div class="profile-sidebar">
-                    <div class="profile-picture">
-                        <div class="profile-picture-placeholder">
-                            <i class="fas fa-user"></i>
-                        </div>
-                    </div>
-                    <h3 id="userName">Matheus M.</h3>
-                    <p id="userEmail">matheus@email.com</p>
-                    <p id="userPhone">(11) 99999-9999</p>
-                </div>
-
-                <div class="profile-main">
-                    <h3>Editar Perfil</h3>
-                    <form id="profileForm" class="form">
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="fullName">Nome Completo</label>
-                                <input type="text" id="fullName" name="fullName" value="Matheus M." required>
-                            </div>
-                            <div class="form-group">
-                                <label for="email">E-mail</label>
-                                <input type="email" id="email" name="email" value="matheus@email.com" required>
-                            </div>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="phone">Telefone</label>
-                                <input type="text" id="phone" name="phone" value="(11) 99999-9999" required>
-                            </div>
-                            <div class="form-group">
-                                <label for="password">Senha</label>
-                                <input type="password" id="password" name="password" placeholder="••••••••">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="notes">Observações</label>
-                            <textarea id="notes" name="notes" rows="3" placeholder="Alguma observação..."></textarea>
-                        </div>
-                        <button type="submit" class="submit-btn btn-primary">Salvar Alterações</button>
-                    </form>
-                </div>
-            </div>
-
-            <div class="booking-history">
-                <div class="history-header">
-                    <h3>Histórico de Agendamentos</h3>
-                    <div class="history-controls">
-                        <div class="search-box">
-                            <i class="fas fa-search"></i>
-                            <input type="text" id="historySearch" placeholder="Buscar por serviço, barbeiro ou data...">
-                        </div>
-                        <div class="filter-buttons">
-                            <button class="filter-btn active" data-filter="all">Todos</button>
-                            <button class="filter-btn" data-filter="concluido">Concluídos</button>
-                            <button class="filter-btn" data-filter="cancelado">Cancelados</button>
-                            <button class="filter-btn" data-filter="futuro">Futuros</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="history-stats">
-                    <div class="stat-item">
-                        <span class="stat-value" id="totalBookings">0</span>
-                        <span class="stat-label">Total</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-value" id="completedBookings">0</span>
-                        <span class="stat-label">Concluídos</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-value" id="futureBookings">0</span>
-                        <span class="stat-label">Futuros</span>
-                    </div>
-                </div>
-                <div class="table-container">
-                    <table id="bookingsTable">
-                        <thead>
-                            <tr>
-                                <th>Data</th>
-                                <th>Horário</th>
-                                <th>Serviço</th>
-                                <th>Barbeiro</th>
-                                <th>Status</th>
-                                <th>Ações</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bookingsTableBody">
-                        </tbody>
-                    </table>
-                </div>
-                <div class="no-results" id="noResults" style="display: none;">
-                    <i class="fas fa-search"></i>
-                    <p>Nenhum agendamento encontrado</p>
-                </div>
-            </div>
+  <header class="header">
+    <nav class="navbar">
+      <div class="nav-container">
+        <div class="logo">
+          <div class="logo-content">
+            <i class="fas fa-cut"></i>
+            <span>Barbearia Style</span>
+          </div>
         </div>
-    </section>
-
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>
-                        <i class="fas fa-cut"></i>
-                        Barbearia Style
-                    </h3>
-                    <p>Seu estilo, nossa paixão. Agende seu horário online e cuide do seu visual com os melhores profissionais.</p>
-                    <div class="social-links">
-                        <a href="https://instagram.com/barbeariaStyle01" target="_blank" aria-label="Instagram">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="https://facebook.com/barbeariaStyle" target="_blank" aria-label="Facebook">
-                            <i class="fab fa-facebook"></i>
-                        </a>
-                        <a href="https://twitter.com/barbeariaStyle" target="_blank" aria-label="Twitter">
-                            <i class="fab fa-twitter"></i>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Links Rápidos</h4>
-                    <ul>
-                        <li><a href="/web/index/home.html#home">Início</a></li>
-                        <li><a href="/web/index/home.html#services">Serviços</a></li>
-                        <li><a href="/web/index/home.html#barbers">Barbeiros</a></li>
-                        <li><a href="/web/index/home.html#calculator">Calculadora</a></li>
-                        <li><a href="/web/index/home.html#booking">Agendar</a></li>
-                        <li><a href="/web/index/home.html#contact">Contato</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Serviços</h4>
-                    <ul>
-                        <li><a href="/web/index/home.html#services">Corte Masculino</a></li>
-                        <li><a href="/web/index/home.html#services">Barba</a></li>
-                        <li><a href="/web/index/home.html#services">Corte + Barba</a></li>
-                        <li><a href="/web/index/home.html#services">Sobrancelha</a></li>
-                    </ul>
-                </div>
-
-                <div class="footer-section">
-                    <h4>Contato</h4>
-                    <ul class="contact-list">
-                        <li>
-                            <i class="fas fa-map-marker-alt"></i>
-                            <span>Rua Cícero Duarte, 905<br>Junco - Picos/PI</span>
-                        </li>
-                        <li>
-                            <i class="fas fa-phone"></i>
-                            <a href="tel:+5586999999999">(86) 99999-9999</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-envelope"></i>
-                            <a href="mailto:contato@barbeariastyle.com">contato@barbeariastyle.com</a>
-                        </li>
-                        <li>
-                            <i class="fas fa-clock"></i>
-                            <span>Seg - Sex: 8h às 18h<br>Sáb: 8h às 16h</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; 2025 Barbearia Style. Todos os direitos reservados.</p>
-            </div>
+        <ul class="nav-menu">
+          <li><a href="/web/index/home.html" class="nav-link">Voltar</a></li>
+        </ul>
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <button id="themeToggle" class="theme-toggle" aria-label="Alternar tema">
+            <i class="fas fa-moon"></i>
+          </button>
+          <div class="hamburger">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+          </div>
         </div>
-    </footer>
+      </div>
+    </nav>
+  </header>
 
-    <a href="https://wa.me/558981356580?text=Olá!%20Gostaria%20de%20agendar%20um%20horário." 
-       class="whatsapp-float" 
-       target="_blank" 
-       aria-label="Fale conosco no WhatsApp">
-        <i class="fab fa-whatsapp"></i>
-        <span class="whatsapp-tooltip">Fale conosco!</span>
-    </a>
+  <section id="profile" class="profile-section">
+    <div class="container">
+      <h2>Meu Perfil</h2>
+      <div class="profile-container">
+        <div class="profile-sidebar">
+          <div class="profile-picture">
+            <div class="profile-picture-placeholder">
+              <i class="fas fa-user"></i>
+            </div>
+          </div>
+          <h3 id="userName">Matheus M.</h3>
+          <p id="userEmail">matheus@email.com</p>
+          <p id="userPhone">(11) 99999-9999</p>
+        </div>
 
-    <script src="/web/script/api.js"></script>
-    <script src="/web/script/auth-guard.js"></script>
-    <script src="/web/script/theme.js"></script>
-    <script src="/web/script/profile.js"></script>
+        <div class="profile-main">
+          <h3>Editar Perfil</h3>
+          <form id="profileForm" class="form">
+            <div class="form-row">
+              <div class="form-group">
+                <label for="fullName">Nome Completo</label>
+                <input type="text" id="fullName" name="fullName" value="Matheus M." required>
+              </div>
+              <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" value="matheus@email.com" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="phone">Telefone</label>
+                <input type="text" id="phone" name="phone" value="(11) 99999-9999" required>
+              </div>
+              <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" placeholder="••••••••">
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="notes">Observações</label>
+              <textarea id="notes" name="notes" rows="3" placeholder="Alguma observação..."></textarea>
+            </div>
+            <button type="submit" class="submit-btn btn-primary">Salvar Alterações</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="booking-history">
+        <div class="history-header">
+          <h3>Histórico de Agendamentos</h3>
+          <div class="history-controls">
+            <div class="search-box">
+              <i class="fas fa-search"></i>
+              <input type="text" id="historySearch" placeholder="Buscar por serviço, barbeiro ou data...">
+            </div>
+            <div class="filter-buttons">
+              <button class="filter-btn active" data-filter="all">Todos</button>
+              <button class="filter-btn" data-filter="concluido">Concluídos</button>
+              <button class="filter-btn" data-filter="cancelado">Cancelados</button>
+              <button class="filter-btn" data-filter="futuro">Futuros</button>
+            </div>
+          </div>
+        </div>
+        <div class="history-stats">
+          <div class="stat-item">
+            <span class="stat-value" id="totalBookings">0</span>
+            <span class="stat-label">Total</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="completedBookings">0</span>
+            <span class="stat-label">Concluídos</span>
+          </div>
+          <div class="stat-item">
+            <span class="stat-value" id="futureBookings">0</span>
+            <span class="stat-label">Futuros</span>
+          </div>
+        </div>
+        <div class="table-container">
+          <table id="bookingsTable">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Horário</th>
+                <th>Serviço</th>
+                <th>Barbeiro</th>
+                <th>Status</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="bookingsTableBody">
+            </tbody>
+          </table>
+        </div>
+        <div class="no-results" id="noResults" style="display: none;">
+          <i class="fas fa-search"></i>
+          <p>Nenhum agendamento encontrado</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>
+            <i class="fas fa-cut"></i>
+            Barbearia Style
+          </h3>
+          <p>Seu estilo, nossa paixão. Agende seu horário online e cuide do seu visual com os melhores profissionais.</p>
+          <div class="social-links">
+            <a href="https://instagram.com/barbeariaStyle01" target="_blank" aria-label="Instagram">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://facebook.com/barbeariaStyle" target="_blank" aria-label="Facebook">
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://twitter.com/barbeariaStyle" target="_blank" aria-label="Twitter">
+              <i class="fab fa-twitter"></i>
+            </a>
+          </div>
+        </div>
+
+        <div class="footer-section">
+          <h4>Links Rápidos</h4>
+          <ul>
+            <li><a href="/web/index/home.html#home">Início</a></li>
+            <li><a href="/web/index/home.html#services">Serviços</a></li>
+            <li><a href="/web/index/home.html#barbers">Barbeiros</a></li>
+            <li><a href="/web/index/home.html#calculator">Calculadora</a></li>
+            <li><a href="/web/index/home.html#booking">Agendar</a></li>
+            <li><a href="/web/index/home.html#contact">Contato</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Serviços</h4>
+          <ul>
+            <li><a href="/web/index/home.html#services">Corte Masculino</a></li>
+            <li><a href="/web/index/home.html#services">Barba</a></li>
+            <li><a href="/web/index/home.html#services">Corte + Barba</a></li>
+            <li><a href="/web/index/home.html#services">Sobrancelha</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contato</h4>
+          <ul class="contact-list">
+            <li>
+              <i class="fas fa-map-marker-alt"></i>
+              <span>Rua Cícero Duarte, 905<br>Junco - Picos/PI</span>
+            </li>
+            <li>
+              <i class="fas fa-phone"></i>
+              <a href="tel:+5586999999999">(86) 99999-9999</a>
+            </li>
+            <li>
+              <i class="fas fa-envelope"></i>
+              <a href="mailto:contato@barbeariastyle.com">contato@barbeariastyle.com</a>
+            </li>
+            <li>
+              <i class="fas fa-clock"></i>
+              <span>Seg - Sex: 8h às 18h<br>Sáb: 8h às 16h</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; 2025 Barbearia Style. Todos os direitos reservados.</p>
+      </div>
+    </div>
+  </footer>
+
+  <a href="https://wa.me/558981356580?text=Olá!%20Gostaria%20de%20agendar%20um%20horário." 
+     class="whatsapp-float" 
+     target="_blank" 
+     aria-label="Fale conosco no WhatsApp">
+    <i class="fab fa-whatsapp"></i>
+    <span class="whatsapp-tooltip">Fale conosco!</span>
+  </a>
+
+  <script src="/web/script/api.js"></script>
+  <script src="/web/script/auth-guard.js"></script>
+  <script src="/web/script/theme.js"></script>
+  <script src="/web/script/profile.js"></script>
 </body>
 
 </html>
