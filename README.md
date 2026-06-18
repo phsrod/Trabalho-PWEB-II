@@ -1,4 +1,4 @@
-# Barbearia Style — Sistema de Agendamento Online
+# Barbearia Style — Sistema de Agendamento Online (APRESENTADO)
 
 Sistema web full-stack para gerenciamento de agendamentos de uma barbearia, desenvolvido como trabalho acadêmico da disciplina **Programação Web II** (UFPI). O projeto permite que clientes visualizem serviços e barbeiros, realizem agendamentos online, gerenciem o perfil e acompanhem o histórico de reservas.
 
